@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Navbar, Nav,NavItem,NavDropdown,MenuItem,Jumbotron, Button } from 'react-bootstrap';
+//https://stackoverflow.com/questions/23402542/embedding-svg-into-reactjs
 
 class App extends Component {
   render() {
@@ -42,6 +43,14 @@ class App extends Component {
                 View React Bootstrap Docs
               </Button>
             </p>
+            <h1>Graphics</h1>
+            <svg width="100" height="100">
+              <ellipse cx="30" cy="30" rx="20" ry="20" style={{fill:'lightgray'}} />
+              <ellipse cx="30" cy="12" rx="1" ry="1" style={{fill:'blue'}} />
+              <polygon points="28,30 32,30 30,48" style={{fill:'blue'}} />
+              <polygon points="28,28 32,32 18,40" style={{fill:'blue'}} />
+              <polygon points="28,28 32,32 48,20" style={{fill:'red'}} />
+            </svg>
           </Grid>
         </Jumbotron>
       </div>
