@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Grid, Navbar, Nav,NavItem,NavDropdown,MenuItem,Jumbotron, Button } from 'react-bootstrap';
 //my components
-import {MySimpleStaticClock,MySimpleCube} from './components';
+import {MySimpleStaticClock,MySimpleCube,MySimple1DMesh} from './components';
 //https://stackoverflow.com/questions/23402542/embedding-svg-into-reactjs
 
 class App extends Component {
+  //In the future, i  will use react router, to setup which component to show
+  
   render() {
     
     return (
@@ -47,8 +49,9 @@ class App extends Component {
               </Button>
             </p>
             <h1>Graphics</h1>
-            <MySimpleStaticClock/>
-            <MySimpleCube/>
+            {/* works <MySimpleStaticClock/>  */}
+            {/* works <MySimpleCube/>  */}
+            <MySimple1DMesh/>
           </Grid>
         </Jumbotron>
       </div>
