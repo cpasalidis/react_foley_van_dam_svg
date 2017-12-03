@@ -7,11 +7,42 @@ class Mesh1D {
         
     }
 
-    crossProduct = (e1,e2) => {
+    /** cross product of edges with indexes e1 and e2 **/
+    vectorOfEdge = (e) => {
+        const EI=0;
+        const EJ=1;
         const XC=0;
         const YC=1;
-
+        let vertexi = this.verices[ this.edges[e][EI] ];
+        let vertexj = this.verices[ this.edges[e][EJ] ];
+        let vy = vertexj[YC]-vertexi[YC];
+        let vx = vertexj[XC]-vertexi[XC];
+        return [vx,vy];
     }
+
+    lengthOfVector = (v) => {
+        const XC=0;
+        const YC=1;
+        const vy = v[YC];
+        const vx = v[XC];
+        return Math.sqrt(vy*vy+vx*vx);
+    }
+
+    innerProductVectors = (ve1,ve2) => {
+        const XC=0;
+        const YC=1;
+        const inner1and2=ve1[XC]*ve2[XC] + ve1[YC]*ve2[YC];
+        const lve1 = this.lengthOfVector(ve1);
+        const lve2 = this.lengthOfVector(ve2);
+        return inner1and2/(lve1*lve2);
+    }
+
+    innerProduct = (e1,e2) => {
+        const ve1 = this.vectorOfEdge(e1);
+        const ve2 = this.vectorOfEdge(e2);
+        return this.innerProductVectors(ve1,ve2);
+    }
+
     addVertex =(x,y) => {
         console.log("Adding point <" + x + ',' + y+'> Not checking if already exists');                
         this.vertices.push([x,y]);    
@@ -35,7 +66,9 @@ class Mesh1D {
     }
 
     printInfo ()  {
-        console.log("hello");
+        console.log("printinfo");
+        //test/console.log("Lenght of unit vectors " +  this.lengthOfVector([1,0]) + " " + this.lengthOfVector([0,1]) + " and of 1,1 vector " + this.lengthOfVector([1,1]) + " and of 3,4 vector " + this.lengthOfVector([3,4]));
+        //test/console.log("Inner product tests: " + this.innerProductVectors([1,0],[0,1]) + " " + this.innerProductVectors([1,0],[1,1])  + " " + this.innerProductVectors([0,1],[1,1]));
     }
 };
 
