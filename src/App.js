@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Grid, Navbar, Nav,NavItem,NavDropdown,MenuItem,Jumbotron, Button } from 'react-bootstrap';
 //my components
-import {MySimpleStaticClock,MySimpleCube,MySimple1DMesh} from './components';
+//import {MySimpleStaticClock,MySimpleCube,MySimple1DMesh} from './components';
+import {MySimpleStraightPaths} from './components';
 //https://stackoverflow.com/questions/23402542/embedding-svg-into-reactjs
 
 class App extends Component {
@@ -51,7 +52,8 @@ class App extends Component {
             <h1>Graphics</h1>
             {/* works <MySimpleStaticClock/>  */}
             {/* works <MySimpleCube/>  */}
-            <MySimple1DMesh/>
+            {/* works <MySimple1DMesh/>  */}
+            <MySimpleStraightPaths/>
           </Grid>
         </Jumbotron>
       </div>
