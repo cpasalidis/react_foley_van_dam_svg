@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Mesh1D from '../utils/Mesh1D';
+import BalancedBinaryTree from '../utils/BalancedBinaryTree';
+import TreeNode from '../utils/TreeNode';
 
 class MySimple1DMesh extends Component {
     constructor() {
@@ -8,6 +10,13 @@ class MySimple1DMesh extends Component {
     }
 
      makemesh = () => {
+       let treeNode = new TreeNode(0);
+       let treeNode2 = new TreeNode(1);
+       let btree = new BalancedBinaryTree();
+             btree.add(treeNode);
+             btree.add(treeNode2);
+       console.log("balanced tree size <" + btree.size() + "> members <" + btree.toString() + ">");
+      //
       let mesh = new Mesh1D();
       mesh.addVertex(100,100);
       mesh.addVertex(200,200);
@@ -28,14 +37,14 @@ class MySimple1DMesh extends Component {
           <svg width={CANVAS_WIDTH} height={CANVAS_HEIGHT}>"
           {
             mesh.vertices.map((vertex,index) => {
-              return (  <circle key={index} cx={vertex[XC]} cy={vertex[YC]} r="2" stroke="black" strokeWidth="1" fill="white"/>);                      
+              return (  <circle key={index} cx={vertex.X()} cy={vertex.Y()} r="2" stroke="black" strokeWidth="1" fill="white"/>);                      
             })
           }
           {
             mesh.edges.map((edge,index) => {
               const startpoint = mesh.vertices[edge[EDGE_I]];
               const endpoint = mesh.vertices[edge[EDGE_J]];
-              return (  <line key={index} x1={startpoint[XC]} y1={startpoint[YC]} x2={endpoint[XC]} y2={endpoint[YC]} style={{stroke:'blue',strokeWidth:1}}/>);                      
+              return (  <line key={index} x1={startpoint.X()} y1={startpoint.Y()} x2={endpoint.X()} y2={endpoint.Y()} style={{stroke:'blue',strokeWidth:1}}/>);                      
             })
           }
           </svg>
