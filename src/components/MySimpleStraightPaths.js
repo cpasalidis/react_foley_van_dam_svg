@@ -10,8 +10,8 @@ class MySimpleStraightPaths extends Component {
     }
 
      makemesh = () => {
-       let treeNode = new Point2DTreeNode(100,100);
-       let treeNode2 = new Point2DTreeNode(200,200);
+       let treeNode = new Point2DTreeNode(100,100,true);
+       let treeNode2 = new Point2DTreeNode(200,200,true);
        let btree = new BalancedBinaryTree();
              btree.add(treeNode);
              btree.add(treeNode2);
