@@ -18,12 +18,21 @@ class MySimpleStraightPaths extends Component {
        console.log("balanced tree size <" + btree.size() + "> members <" + btree.toString() + ">");
       //
       let mesh = new Mesh1D();
-      mesh.addVertex(100,100);
-      mesh.addVertex(200,200);
+      mesh.addVertex(10,200);
+      mesh.addVertex(50,20);
+      mesh.addVertex(50,5);
+      mesh.addVertex(100,150);
+      mesh.addVertex(150,220);
+      mesh.addVertex(150,7);
+      mesh.addVertex(200,10);
+      mesh.addVertex(225,140);
+      mesh.addVertex(250,9);
+      mesh.addVertex(300,155);
       mesh.addEdge(0,1);
-      mesh.addVertex(220,140);
-      mesh.addEdge(0,2);
-      mesh.addEdge(1,2);
+      mesh.addEdge(2,3);
+      mesh.addEdge(4,6);
+      mesh.addEdge(5,7);
+      mesh.addEdge(8,9);
       mesh.printInfo();
 
        const XC = 0; //index of x coordinate in mesh table
