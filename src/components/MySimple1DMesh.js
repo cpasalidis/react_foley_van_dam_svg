@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Mesh1D from '../utils/Mesh1D';
 import BalancedBinaryTree from '../utils/BalancedBinaryTree';
-import TreeNode from '../utils/TreeNode';
+import TreeNode from '../utils/avl_tree';
 
 class MySimple1DMesh extends Component {
     constructor() {
@@ -26,8 +26,8 @@ class MySimple1DMesh extends Component {
       mesh.addEdge(1,2);
       mesh.printInfo();
 
-       const XC = 0; //index of x coordinate in mesh table
-       const YC = 1; //index of y coordinate in mesh table
+       //const XC = 0; //index of x coordinate in mesh table
+      // const YC = 1; //index of y coordinate in mesh table
        const EDGE_I = 0; //index of first vertex of edge 
        const EDGE_J = 1; //index of second vertex of edge
         const CANVAS_WIDTH=500;

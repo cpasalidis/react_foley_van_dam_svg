@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Mesh1D from '../utils/Mesh1D';
-import BalancedBinaryTree from '../utils/BalancedBinaryTree';
-import Point2DTreeNode from '../utils/Point2DTreeNode';
+import {AVLTree} from '../utils/avl_tree';
+import {Point2DTreeNode} from '../utils/avl_tree';
 
 class MySimpleStraightPaths extends Component {
     constructor() {
@@ -10,13 +10,16 @@ class MySimpleStraightPaths extends Component {
     }
 
      makemesh = () => {
+       /*
        let treeNode = new Point2DTreeNode(100,100,true);
        let treeNode2 = new Point2DTreeNode(200,200,true);
        let btree = new BalancedBinaryTree();
              btree.add(treeNode);
              btree.add(treeNode2);
        console.log("balanced tree size <" + btree.size() + "> members <" + btree.toString() + ">");
+       */
       //
+      let edgesStartingFromVertex=[]; //for each vertex contains edges starting on it
       let mesh = new Mesh1D();
       mesh.addVertex(10,200);
       mesh.addVertex(50,20);
@@ -29,14 +32,32 @@ class MySimpleStraightPaths extends Component {
       mesh.addVertex(250,9);
       mesh.addVertex(300,155);
       mesh.addEdge(0,1);
+      edgesStartingFromVertex[0]=[0];
+      edgesStartingFromVertex[1]=[];
       mesh.addEdge(2,3);
+      edgesStartingFromVertex[2]=[0];
+      edgesStartingFromVertex[3]=[];
       mesh.addEdge(4,6);
+      edgesStartingFromVertex[4]=[0];
+      edgesStartingFromVertex[6]=[];
       mesh.addEdge(5,7);
+      edgesStartingFromVertex[5]=[0];
+      edgesStartingFromVertex[7]=[];
       mesh.addEdge(8,9);
-      mesh.printInfo();
-
-       const XC = 0; //index of x coordinate in mesh table
-       const YC = 1; //index of y coordinate in mesh table
+      edgesStartingFromVertex[8]=[0];
+      edgesStartingFromVertex[9]=[];
+      //mesh.printInfo();
+      let btree = new AVLTree(); 
+      mesh.vertices.map((vertex,index) => {
+        let tn = new Point2DTreeNode(vertex.X(),vertex.Y(),true,edgesStartingFromVertex[index],"point"+index);
+        btree.insertNew(tn);
+        return tn;
+      })
+        console.log("balanced tree size <" + btree.size() + "> members <" + btree.printTree(true) + ">");
+        //8elw mono thn arxh ka8e tmhmatos kai to mikrotero x paei aristera. An exoyn idio x, to mikrotero y paei aristera
+        
+       //const XC = 0; //index of x coordinate in mesh table
+       //const YC = 1; //index of y coordinate in mesh table
        const EDGE_I = 0; //index of first vertex of edge 
        const EDGE_J = 1; //index of second vertex of edge
         const CANVAS_WIDTH=500;

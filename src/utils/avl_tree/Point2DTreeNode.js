@@ -1,17 +1,17 @@
+import TreeNode from './treenode';
 
 const XC=0;
 const YC=1;
-class Point2DTreeNode {
+class Point2DTreeNode extends TreeNode {
 
-    constructor(x,y,reverse) {
-        this.left = null;
-        this.right = null;
-        this._data = [x,y]; //position in array is index of vertex        
+    constructor(x,y,reverse,userData,name) {
+        super( [x,y],name); //position in array is index of vertex        
         this._reverse = reverse;
+        this.userData = userData;
     }
 
-    X=() => { return this._data[XC]; }
-    Y=() => { return this._data[YC]; }
+    X=() => { return this.data[XC]; }
+    Y=() => { return this.data[YC]; }
     
     /** we process points top to bottom, left to right */
     compareTo = (anotherNode) => {
@@ -26,10 +26,10 @@ class Point2DTreeNode {
         }
       } //of method
  
-      value = () => { 
-          return this._data; 
-     }
- 
+     toString = () => {
+        return ""+this.data + "~" + this.userData;
+    }
+
 };
 
 export default Point2DTreeNode;

@@ -57,12 +57,12 @@ class Mesh1D {
     }
 
     addVertex =(x,y) => {
-        console.log("Adding point <" + x + ',' + y+'> Not checking if already exists');                
+        //console.log("Adding point <" + x + ',' + y+'> Not checking if already exists');                
         this.vertices.push( new Vector2D(x,y));    
     }
 
     addEdge = (i,j) => {
-        console.log("Adding edge from  <" + i + ' to ' + j+'> Not checking if already exists');                
+       // console.log("Adding edge from  <" + i + ' to ' + j+'> Not checking if already exists');                
         this.edges.push([i,j]);
         //i also have to add this edge to the neighbors of both i and j keeping teh counterclockwise order of neighbors.
         //To keep the order (imagine adding a 3rd,4th e.tc edge ) i calculate e3wteriko ginomeno of the new edge with the previous edges and insert the new edge when the 

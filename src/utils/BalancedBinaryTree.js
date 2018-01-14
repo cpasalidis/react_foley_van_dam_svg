@@ -171,7 +171,9 @@ class BalancedBinaryTree {
 
                                 //officially assign new root
                                 this.root = replacement;        
-                          //no default on this switch statement        
+                                break;
+                          default:
+                            break; //no default on this switch statement        
                         }        
                     //non-root values
                     } else {
@@ -228,8 +230,9 @@ class BalancedBinaryTree {
                                 } else {
                                     parent.right = replacement;
                                 }          
-        
-                            //no default on this switch statement
+                                break;
+                            default:
+                                break; //no default on this switch statement
         
                         } //of switch
                     } //of if...in case this is not root of the whole tree
@@ -256,8 +259,18 @@ class BalancedBinaryTree {
         return result;
     } //of toArray()
 
+    toStringArray = () => {
+        var result = [];
+
+        this._traverse((node)=> {
+            result.push(node.toString());
+        });
+
+        return result;
+    } //of method
+
     toString = () => {
-        return this.toArray().toString();
+        return this.toStringArray();
     }
 } //of class
 
