@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Mesh1D from '../utils/Mesh1D';
-import {AVLTree} from '../utils/avl_tree';
+import {AVLTree,AVLTreeAlwaysLeafs} from '../utils/avl_tree';
 import {Point2DTreeNode} from '../utils/avl_tree';
 
 class MySimpleStraightPaths extends Component {
@@ -47,7 +47,8 @@ class MySimpleStraightPaths extends Component {
       edgesStartingFromVertex[8]=[0];
       edgesStartingFromVertex[9]=[];
       //mesh.printInfo();
-      let btree = new AVLTree(); 
+      //this is the right structure for points...i just want to test the other btree/let btree = new AVLTree(); 
+      let btree = new AVLTreeAlwaysLeafs(); 
       mesh.vertices.map((vertex,index) => {
         let tn = new Point2DTreeNode(vertex.X(),vertex.Y(),true,edgesStartingFromVertex[index],"point"+index);
         btree.insertNew(tn);

@@ -25,6 +25,10 @@ class TreeNode {
        return this.name;
    }
 
+   copy = () => {
+       let t = new TreeNode(this.data,this.name);
+       return t;
+   }
 } //of class TreeNode
 
 export default TreeNode;

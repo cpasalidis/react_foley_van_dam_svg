@@ -1,12 +1,16 @@
-/* I got this implementation of avl tree from https://repl.it/@lsdkfjlksjflksd/AVL-Tree-Javascript But i heavily modified it**/
-class AVLTree{
+/* I got this implementation of avl tree from https://repl.it/@lsdkfjlksjflksd/AVL-Tree-Javascript But i heavily modified it
+  for each internal node of this tree, the value is the value of the rightmost leaf of the internal nodes left subtree
+  This means there is always left and right subtree...or both are missing (the node is leaf). There is no node with only left subtree or only right subtree
+**/
+class AVLTreeAlwaysLeafs {
+  
   constructor(){
     this.root = null;
     this.total_nodes = 0;
   } 
-  
+
   insertNew = (node) =>{
-    console.log("On insert new of avl tree <" + node.name + ">");
+    console.log("On insert new of always leafs tree <" + node.name + ">");
     if (! this.root){ 
       console.log("insert at root of tree ");    
     } 
@@ -14,24 +18,51 @@ class AVLTree{
     return;
   }
 
+  /** this is the modification.  */
   insert = (parent,node) =>{
-    console.log("on insert of avl tree");
     let nodeName = node ? node.name: '';
     let parentName = parent ? parent.name : '';
-   // console.log("On insert <" + nodeName + "> root of subtree is <" + parentName + ">");  
+   console.log("On insert of always leafs tree <" + nodeName + "> root of subtree is <" + parentName + ">");  
     if (! parent) {
       this.total_nodes += 1 ;     
+      //console.log("method returns <" + nodeName + ">");
       return node;
     } 
     //if code reaches here, treeNode exists
+    if (parent.left && (! parent.right)) {
+      console.log("On insert of always leafs tree, STRANGE left subtree is present and right is not present")
+    } else if ((! parent.left) && parent.right) {
+      console.log("On insert of always leafs tree, STRANGE left subtree is not present and right is present")
+    }
+    //so if code reaches here, either left and right subtrees exist or none of them exists
+
     if (parent.compareTo(node) < 0){ 
        parent.left = this.insert(parent.left, node);
+       if (parent.left && (! parent.right)) {
+         //after insert
+         console.log("after insert i have " + parent.left.name + " to the left of " + parent.name);
+         let copyLeft = parent.left.copy();
+         copyLeft.left = parent.left;
+         copyLeft.right = parent;
+         parent.left = null;
+         parent = copyLeft;
+       }
     } else if (parent.compareTo(node) > 0){
        parent.right = this.insert(parent.right, node);
+       console.log("after insert i have " + parent.right.name + " to the right of " + parent.name);
+       if ((! parent.left) && parent.right) {
+        //after insert
+        let copyLeft = parent.copy();
+        parent.left = copyLeft;        
+      }
+    } else {
+      console.log (" !!!! STRANGE " + parentName + " compare To " + nodeName + " returns " + parent.compareTo(node));
     } 
 
+    /*
     let balance = this.get_height(parent.left) - this.get_height(parent.right);
-   // console.log("on insert ready to calculate balance. i am <" + parent.name +  " left is <"  + (parent.left ? parent.left.name : '') + " right is <" +( parent.right ? parent.right.name : '' ) + " balance is " + balance);
+   console.log("on insert of always leafs tree ready to calculate balance. i am <" + parent.name +  " left is <"  + (parent.left ? parent.left.name : '') + " right is <" +( parent.right ? parent.right.name : '' ) + " balance is " + balance);
+    i dont need to adjust balance ... i did it on insert 
     if (balance > 1){ 
       if (this.get_height(parent.left.left) >= this.get_height(parent.left.right)){
         parent = this.rotateRight(parent);
@@ -48,8 +79,10 @@ class AVLTree{
       } 
     } else {
       parent.height = this.set_height(parent);
-    } 
-    //console.log("on insert after rotating. i am <" + parent.name +  " left is <"  + (parent.left ? parent.left.name : '') + " right is <" +( parent.right ? parent.right.name : '' ));
+    }  
+    parent.height = this.set_height(parent);
+*/
+    //console.log("on insert of always leafs tree after rotating. i am <" + parent.name +  " left is <"  + (parent.left ? parent.left.name : '') + " right is <" +( parent.right ? parent.right.name : '' ));
     return parent; 
   } 
   
@@ -183,8 +216,8 @@ class AVLTree{
      if (! treeRoot) {
        return result;
      }
-     let leftName = treeRoot.left ? treeRoot.left.name:'';
-     let rightName = treeRoot.right ? treeRoot.right.name:'';
+     //let leftName = treeRoot.left ? treeRoot.left.name:'';
+     //let rightName = treeRoot.right ? treeRoot.right.name:'';
      //console.log("leafsinorder: name <" + treeRoot.name + "> left <" + leftName + "> right <" + rightName + ">");
      if ((! treeRoot.left) && (! treeRoot.right)) {
        //leaf node...return name
@@ -202,7 +235,7 @@ class AVLTree{
   
 } //of class
 
-export default AVLTree;
+export default AVLTreeAlwaysLeafs;
 
 /*
 function bfs_traversal(tree){
