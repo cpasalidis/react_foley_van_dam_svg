@@ -7,19 +7,17 @@ class AVLTree{
   
   insertNew = (node) =>{
     console.log("On insert new <" + node.name + ">");
-    if (!this.root){ 
-      this.root = this.insert(this.root,node);
-      console.log("insert root of tree <"  + this.root.name + ">");    
-    } else {
-      this.insert(this.root,node);
-    }
+    if (! this.root){ 
+      console.log("insert at root of tree ");    
+    } 
+    this.root = this.insert(this.root,node);
     return;
   }
 
   insert = (parent,node) =>{
     let nodeName = node ? node.name: '';
     let parentName = parent ? parent.name : '';
-    console.log("On insert <" + nodeName + "> root of subtree is <" + parentName + ">");  
+   // console.log("On insert <" + nodeName + "> root of subtree is <" + parentName + ">");  
     if (! parent) {
       this.total_nodes += 1 ;     
       return node;
@@ -30,8 +28,9 @@ class AVLTree{
     } else if (parent.compareTo(node) > 0){
        parent.right = this.insert(parent.right, node);
     } 
-    
+
     let balance = this.get_height(parent.left) - this.get_height(parent.right);
+   // console.log("on insert ready to calculate balance. i am <" + parent.name +  " left is <"  + (parent.left ? parent.left.name : '') + " right is <" +( parent.right ? parent.right.name : '' ) + " balance is " + balance);
     if (balance > 1){ 
       if (this.get_height(parent.left.left) >= this.get_height(parent.left.right)){
         parent = this.rotateRight(parent);
@@ -49,6 +48,7 @@ class AVLTree{
     } else {
       parent.height = this.set_height(parent);
     } 
+    //console.log("on insert after rotating. i am <" + parent.name +  " left is <"  + (parent.left ? parent.left.name : '') + " right is <" +( parent.right ? parent.right.name : '' ));
     return parent; 
   } 
   
@@ -155,6 +155,9 @@ class AVLTree{
         }
       }
       str += textToShow + " ";
+      if (tree_node !== newline) {
+        console.log("tree node <" + tree_node.name + "> has childdren " + (tree_node.left ? tree_node.left.name : '') + " and " + (tree_node.right ? tree_node.right.name : ''));
+      }
       if (tree_node !== newline && tree_node.left) q.push(tree_node.left) ;
       if (tree_node !== newline && tree_node.right) q.push(tree_node.right);
       if (tree_node === newline && q.length !== 0) q.push(newline) ;

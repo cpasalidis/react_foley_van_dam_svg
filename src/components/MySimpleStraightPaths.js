@@ -51,6 +51,8 @@ class MySimpleStraightPaths extends Component {
       mesh.vertices.map((vertex,index) => {
         let tn = new Point2DTreeNode(vertex.X(),vertex.Y(),true,edgesStartingFromVertex[index],"point"+index);
         btree.insertNew(tn);
+        //btree.printTree(true) ;
+        //console.log("======> <===========");
         return tn;
       })
         console.log("balanced tree size <" + btree.size() + "> members <" + btree.printTree(true) + ">");
