@@ -56,6 +56,7 @@ class MySimpleStraightPaths extends Component {
         return tn;
       })
         console.log("balanced tree size <" + btree.size() + "> members <" + btree.printTree(true) + ">");
+        console.log("leafs in order " + JSON.stringify(btree.leafsInOrderNew()));
         //8elw mono thn arxh ka8e tmhmatos kai to mikrotero x paei aristera. An exoyn idio x, to mikrotero y paei aristera
         
        //const XC = 0; //index of x coordinate in mesh table

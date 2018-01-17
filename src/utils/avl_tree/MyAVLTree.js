@@ -142,6 +142,8 @@ class AVLTree{
     return treeRoot;
   } //of remove
   
+
+
   printTree = (namesOnly) => {    
     let newline = "\n", q = [this.root, newline], str = '';
     while (q.length > 0){
@@ -168,7 +170,35 @@ class AVLTree{
   size = () => {
     return this.total_nodes;
   }
-    
+
+  leafsInOrderNew = () =>{
+    let result = [];
+    if (! this.root) { return result; }
+    return result.concat(this.leafsInOrder(this.root));
+  }
+
+   leafsInOrder = (treeRoot) =>{
+     let result = [];
+     if (! treeRoot) {
+       return result;
+     }
+     let leftName = treeRoot.left ? treeRoot.left.name:'';
+     let rightName = treeRoot.right ? treeRoot.right.name:'';
+     //console.log("leafsinorder: name <" + treeRoot.name + "> left <" + leftName + "> right <" + rightName + ">");
+     if ((! treeRoot.left) && (! treeRoot.right)) {
+       //leaf node...return name
+       return result.concat([treeRoot.name]);
+     }
+     if (treeRoot.left) {
+       result =  result.concat(this.leafsInOrder(treeRoot.left));
+     }
+     if (treeRoot.right) {
+       result = result.concat(this.leafsInOrder(treeRoot.right));
+     }
+     return result;
+    //return treeRoot ? this.leafsInOrder(treeRoot.left).concat([treeRoot.name]).concat(this.leafsInOrder(treeRoot.right)) : []
+    } 
+  
 } //of class
 
 export default AVLTree;
