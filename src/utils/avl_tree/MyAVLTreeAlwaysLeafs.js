@@ -141,20 +141,47 @@ class AVLTreeAlwaysLeafs {
     if (!treeRoot) return null;
     if (treeRoot.compareTo(node) === 0){
       console.log("ready to actually remove " + treeRoot.name);
-      if (!treeRoot.left && !treeRoot.right){ this.total_nodes -= 1; return null; }
-      if (!treeRoot.left){ this.total_nodes -= 1; return treeRoot.right; } 
-      if (!treeRoot.right){ this.total_nodes -= 1; return treeRoot.left; } 
-      let temp_node = this.getmin(treeRoot.right);
-      treeRoot.right = this.remove(treeRoot.right, temp_node);
+      if (!treeRoot.left && !treeRoot.right) {
+        this.total_nodes -= 1; return null;
+      }
+      //if this node here is same as the one to remove, but has left child remove the requested node from the child
+      if (treeRoot.left){         
+          treeRoot.left = this.remove(treeRoot.left,node);
+        }
+      //code can come here if treeRoot.left was not present or if treeRoot.left was just removed. in any case if left subtree does not exist and this treeNode is same value as node, i don't need it. remove it
+      if (! treeRoot.left) {
+        //if i removed the left and nothing remained, also remove treeNode...it was not a leaf
+        this.totalNodes -= 1; treeRoot = treeRoot.right;
+      }
+
+      
     } else if (treeRoot.compareTo(node) < 0){
       treeRoot.left = this.remove(treeRoot.left, node);
       let childName = treeRoot.left ? treeRoot.left.name : '';
       console.log("left of <"+treeRoot.name + "> is <" + childName + ">" )
+      if ((!treeRoot.left) && treeRoot.right) {
+        console.log("replacing <" + treeRoot.name + "> with right child <" + treeRoot.right + ">");
+        this.totalNodes -=1; return treeRoot.right;
+      }
     } else if (treeRoot.compareTo(node) > 0){
       treeRoot.right = this.remove(treeRoot.right, node);
       let childName = treeRoot.right ? treeRoot.right.name: '';
       console.log("right of <"+treeRoot.name + "> is <" + childName + ">" )
+      if ((!treeRoot.right) && treeRoot.left && (treeRoot.left.compareTo(treeRoot) === 0)) {
+        //tree root left, is a leaf with value same as treeRoot...make treeRoot a leaf
+        this.totalNodes -= 1; treeRoot.left = null;
+        console.log("made <" + treeRoot.name + "> a leaf by removing left child");
+      }
     }
+    //make sure that if this node has left subtree, this nodes value is the value of the rightmost leaf of left subtree
+    if (treeRoot.left) {
+      let rightMostNode = this.getRightmostNodeOf(treeRoot.left);
+      console.log("after removal set for <"  + treeRoot.name + "> data to <"  + rightMostNode.data + "> and name <" + rightMostNode.name + ">");
+      treeRoot.data = rightMostNode.data;
+      treeRoot.name =  rightMostNode.name;
+    }
+
+    /*
     let balance = this.get_height(treeRoot.left) - this.get_height(treeRoot.right);
     if (balance > 1){ 
       if (this.get_height(treeRoot.left.left) >= this.get_height(treeRoot.left.right)){
@@ -173,6 +200,7 @@ class AVLTreeAlwaysLeafs {
     } else {
         treeRoot.height = this.set_height(treeRoot);
     } 
+    */
     return treeRoot;
   } //of remove
   
@@ -233,6 +261,12 @@ class AVLTreeAlwaysLeafs {
     //return treeRoot ? this.leafsInOrder(treeRoot.left).concat([treeRoot.name]).concat(this.leafsInOrder(treeRoot.right)) : []
     } 
   
+    getRightmostNodeOf = (parentNotNull) => {
+      if (! parentNotNull.right) {
+        return parentNotNull;
+      }
+      return this.getRightmostNodeOf(parentNotNull.right);
+    }
 } //of class
 
 export default AVLTreeAlwaysLeafs;

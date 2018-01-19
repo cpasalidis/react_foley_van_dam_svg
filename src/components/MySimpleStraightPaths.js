@@ -49,8 +49,14 @@ class MySimpleStraightPaths extends Component {
       //mesh.printInfo();
       //this is the right structure for points...i just want to test the other btree/let btree = new AVLTree(); 
       let btree = new AVLTreeAlwaysLeafs(); 
+      //let point4 = null; //for removal test
+      //let point6 = null; //for removal test
+      let point1 = null; //for removal test
       mesh.vertices.map((vertex,index) => {
         let tn = new Point2DTreeNode(vertex.X(),vertex.Y(),true,edgesStartingFromVertex[index],"point"+index);
+        //if (index  === 4) { point4 = tn;  }
+        //if (index === 6) {point6 = tn;}
+        if (index === 1) {point1 = tn;}
         btree.insertNew(tn);
         //btree.printTree(true) ;
         //console.log("======> <===========");
@@ -58,6 +64,14 @@ class MySimpleStraightPaths extends Component {
       })
         console.log("balanced tree size <" + btree.size() + "> members <" + btree.printTree(true) + ">");
         console.log("leafs in order " + JSON.stringify(btree.leafsInOrderNew()));
+        //< -- Removal tests 
+        console.log ("REMOVING ");
+          //btree.removeNew(point4);
+          //btree.removeNew(point6);
+          btree.removeNew(point1);
+          console.log("balanced tree size <" + btree.size() + "> members <" + btree.printTree(true) + ">");
+          console.log("RRRR ======> <===========");
+        // --> Removal tests
         //8elw mono thn arxh ka8e tmhmatos kai to mikrotero x paei aristera. An exoyn idio x, to mikrotero y paei aristera
         
        //const XC = 0; //index of x coordinate in mesh table
