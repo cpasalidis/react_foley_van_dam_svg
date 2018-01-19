@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Mesh1D from '../utils/Mesh1D';
 import {AVLTree,AVLTreeAlwaysLeafs} from '../utils/avl_tree';
-import {Point2DTreeNode} from '../utils/avl_tree';
+import {Point2DTreeNode,TreeNodeWithLineSegment} from '../utils/avl_tree';
 
 class MySimpleStraightPaths extends Component {
     constructor() {
@@ -9,15 +9,38 @@ class MySimpleStraightPaths extends Component {
         this.makemesh = this.makemesh.bind(this);
     }
 
+    avlTreeTests = (mesh,btreeQ,btreeT) => {
+      //let point4 = null; //for removal test
+      //let point6 = null; //for removal test
+      //let point1 = null; //for removal test
+      mesh.vertices.map((vertex,index) => {
+        let tn = new Point2DTreeNode(vertex.X(),vertex.Y(),true,[],"point"+index);
+        //if (index  === 4) { point4 = tn;  }
+        //if (index === 6) {point6 = tn;}
+        //if (index === 1) {point1 = tn;}
+        btreeQ.insertNew(tn);
+        //btree.printTree(true) ;
+        //console.log("======> <===========");
+        return tn;
+      })
+        console.log("balanced tree size <" + btreeQ.size() + "> members <" + btreeQ.printTree(true) + ">");
+        console.log("leafs in order " + JSON.stringify(btreeQ.leafsInOrderNew()));
+        //< -- Removal tests 
+        console.log ("REMOVING ");
+          //btree.removeNew(point4);
+          //btree.removeNew(point6);
+          //btreeQ.removeNew(point1);
+          console.log("balanced tree size <" + btreeQ.size() + "> members <" + btreeQ.printTree(true) + ">");
+          console.log("RRRR ======> <===========");
+        // --> Removal tests
+
+    }
      makemesh = () => {
-       /*
-       let treeNode = new Point2DTreeNode(100,100,true);
-       let treeNode2 = new Point2DTreeNode(200,200,true);
-       let btree = new BalancedBinaryTree();
-             btree.add(treeNode);
-             btree.add(treeNode2);
-       console.log("balanced tree size <" + btree.size() + "> members <" + btree.toString() + ">");
-       */
+       const XC = 0; //index of x coordinate in mesh table
+       const YC = 1; //index of y coordinate in mesh table
+       const EDGE_I = 0; //index of first vertex of edge 
+       const EDGE_J = 1; //index of second vertex of edge
+
       //
       let edgesStartingFromVertex=[]; //for each vertex contains edges starting on it
       let mesh = new Mesh1D();
@@ -48,36 +71,35 @@ class MySimpleStraightPaths extends Component {
       edgesStartingFromVertex[9]=[];
       //mesh.printInfo();
       //this is the right structure for points...i just want to test the other btree/let btree = new AVLTree(); 
-      let btree = new AVLTreeAlwaysLeafs(); 
-      //let point4 = null; //for removal test
-      //let point6 = null; //for removal test
-      let point1 = null; //for removal test
+      let btreeQ = new AVLTree();
+      let btreeT = new AVLTreeAlwaysLeafs(); 
+      //avltreeTests(mesh,btreeQ,btreeT)
       mesh.vertices.map((vertex,index) => {
         let tn = new Point2DTreeNode(vertex.X(),vertex.Y(),true,edgesStartingFromVertex[index],"point"+index);
-        //if (index  === 4) { point4 = tn;  }
-        //if (index === 6) {point6 = tn;}
-        if (index === 1) {point1 = tn;}
-        btree.insertNew(tn);
+        btreeQ.insertNew(tn);
         //btree.printTree(true) ;
         //console.log("======> <===========");
         return tn;
       })
-        console.log("balanced tree size <" + btree.size() + "> members <" + btree.printTree(true) + ">");
-        console.log("leafs in order " + JSON.stringify(btree.leafsInOrderNew()));
-        //< -- Removal tests 
-        console.log ("REMOVING ");
-          //btree.removeNew(point4);
-          //btree.removeNew(point6);
-          btree.removeNew(point1);
-          console.log("balanced tree size <" + btree.size() + "> members <" + btree.printTree(true) + ">");
-          console.log("RRRR ======> <===========");
-        // --> Removal tests
+      console.log("balanced tree size <" + btreeQ.size() + "> members <" + btreeQ.printTree(true) + ">");
+      let qnodes = btreeQ.bfs_traversal();
+      console.log("nodes bfs " + JSON.stringify(qnodes));
         //8elw mono thn arxh ka8e tmhmatos kai to mikrotero x paei aristera. An exoyn idio x, to mikrotero y paei aristera
-        
-       //const XC = 0; //index of x coordinate in mesh table
-       //const YC = 1; //index of y coordinate in mesh table
-       const EDGE_I = 0; //index of first vertex of edge 
-       const EDGE_J = 1; //index of second vertex of edge
+        let meshEdges = mesh.edges;
+        let meshVertices = mesh.vertices;
+        for (let Qi = 0; Qi < qnodes.length;Qi++) {
+          let p = qnodes[Qi];
+          let pSegments = p.getUserData();
+          for (let pSegi = 0; pSegi < pSegments.length;pSegi++)  {
+            let aSegment = meshEdges[pSegments[pSegi]];
+            let s1 = aSegment[EDGE_I];
+            let s2 = aSegment[EDGE_J];
+            let segForT = new TreeNodeWithLineSegment(s1[XC],s1[YC],s2[XC],s2[YC],p.name +".seg" + pSegi) ;
+            btreeT.insertNew(segForT);
+          }
+          console.log("balanced tree named T size <" + btreeT.size() + "> members <" + btreeT.printTree(true) + ">");
+
+        }
         const CANVAS_WIDTH=500;
         const CANVAS_HEIGHT=500;
     

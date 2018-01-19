@@ -34,6 +34,10 @@ class Point2DTreeNode extends TreeNode {
         let t = new Point2DTreeNode(this.X(),this.Y(),this._reverse,this.userData,this.name);
         return t;
     }
+
+    getUserData = () => {
+        return this.userData;
+    }
 };
 
 export default Point2DTreeNode;

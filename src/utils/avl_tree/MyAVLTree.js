@@ -200,6 +200,16 @@ class AVLTree{
     //return treeRoot ? this.leafsInOrder(treeRoot.left).concat([treeRoot.name]).concat(this.leafsInOrder(treeRoot.right)) : []
     } 
   
+    bfs_traversal = () => {
+      let queue = [this.root], arr = []
+      while (queue.length > 0){
+        let tree_node = queue.shift()
+        arr.push(tree_node)
+        if (tree_node.left){ queue.push(tree_node.left) } 
+        if(tree_node.right){ queue.push(tree_node.right) } 
+      }
+      return arr 
+    } 
 } //of class
 
 export default AVLTree;
