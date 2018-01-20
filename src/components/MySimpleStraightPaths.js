@@ -91,9 +91,7 @@ class MySimpleStraightPaths extends Component {
         //8elw mono thn arxh ka8e tmhmatos kai to mikrotero x paei aristera. An exoyn idio x, to mikrotero y paei aristera
         let meshEdges = mesh.edges;
         let meshVertices = mesh.vertices;        
-        let LOOP = 0
-        while (btreeQ.size() > 0 && LOOP < 100) {
-          LOOP++;
+        //THIS SHOULD RUN WHILE btreeq HAS POINTS
           console.log("balanced tree size <" + btreeQ.size() + "> members <" + btreeQ.printTree(true) + ">");
           let qnodes = btreeQ.bfs_traversal();    
         for (let Qi = 0; Qi < qnodes.length;Qi++) {
@@ -212,7 +210,6 @@ class MySimpleStraightPaths extends Component {
          }
       
         } //of for in Qi
-      } //while bTreeQ is not empty
         const CANVAS_WIDTH=500;
         const CANVAS_HEIGHT=500;
     
