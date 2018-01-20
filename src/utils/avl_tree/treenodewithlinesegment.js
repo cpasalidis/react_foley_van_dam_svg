@@ -9,19 +9,23 @@ class TreeNodeWithLineSegment extends TreeNode {
         this.END=1;
         this.X=0;
         this.Y=1;
-        this.contains = []; //each item is a 2element array with x,y of a contained point
+        this.contains = []; //each item is a 2element array with x,y of a contained point        
     }
 
     compareTo = (other) => {
-       let comp = this.data[this.END][this.Y]-other.data[this.END][this.Y];
+        let y2 = this.data[this.END][this.Y];
+        let othery2 = other.data[this.END][this.Y];
+       let comp = y2-othery2;
        if (comp === 0) {
-            comp = this.data[this.END][this.X]-other.data[this.END][this.X];
+           let x2 =this.data[this.END][this.X];
+           let otherx2 =  other.data[this.END][this.X];
+            comp = x2 - otherx2;
        }
        return comp;
     }
 
     toString = () => {
-        return "TreeNodeWithLineSegment " + this.segmentName;
+        return "TreeNodeWithLineSegment " + this.name;
     }
 
     value = () => { 
@@ -50,6 +54,7 @@ class TreeNodeWithLineSegment extends TreeNode {
         }
         return false;
    }
+
 } //of class TreeNode
 
 export default TreeNodeWithLineSegment;

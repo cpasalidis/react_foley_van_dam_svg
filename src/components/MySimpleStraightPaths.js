@@ -7,6 +7,7 @@ class MySimpleStraightPaths extends Component {
     constructor() {
         super();
         this.makemesh = this.makemesh.bind(this);
+        this.eyreshNeoySymbantos = this.eyreshNeoySymbantos.bind(this);
     }
 
     avlTreeTests = (mesh,btreeQ,btreeT) => {
@@ -35,6 +36,11 @@ class MySimpleStraightPaths extends Component {
         // --> Removal tests
 
     }
+
+    eyreshNeoySymbantos = (sl,sr,p) => {
+      //TODO
+    }
+
      makemesh = () => {
        const XC = 0; //index of x coordinate in mesh table
        const YC = 1; //index of y coordinate in mesh table
@@ -81,12 +87,15 @@ class MySimpleStraightPaths extends Component {
         //console.log("======> <===========");
         return tn;
       })
-      console.log("balanced tree size <" + btreeQ.size() + "> members <" + btreeQ.printTree(true) + ">");
-      let qnodes = btreeQ.bfs_traversal();
       //console.log("nodes bfs " + JSON.stringify(qnodes));
         //8elw mono thn arxh ka8e tmhmatos kai to mikrotero x paei aristera. An exoyn idio x, to mikrotero y paei aristera
         let meshEdges = mesh.edges;
         let meshVertices = mesh.vertices;        
+        let LOOP = 0
+        while (btreeQ.size() > 0 && LOOP < 100) {
+          LOOP++;
+          console.log("balanced tree size <" + btreeQ.size() + "> members <" + btreeQ.printTree(true) + ">");
+          let qnodes = btreeQ.bfs_traversal();    
         for (let Qi = 0; Qi < qnodes.length;Qi++) {
           //bhma1. eyresh U(p)
           let p = qnodes[Qi];
@@ -103,7 +112,7 @@ class MySimpleStraightPaths extends Component {
               let x1 = s1.X(),y1=s1.Y(),x2=s2.X(),y2=s2.Y();
               console.log(" vertex1 is <" +JSON.stringify(s1) + "> with vertex2 is <" + JSON.stringify(s2) + "> coordinates are <" + x1 + "," + y1 + " - " + x2 + "," + y2);
               let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,p.name +".seg" + pSegi) ;
-              up.push(segForT.name);
+              up.push(segForT);
               console.log("Adding to T element <" +JSON.stringify(segForT) + ">");
               btreeT.insertNew(segForT);
             }
@@ -116,15 +125,94 @@ class MySimpleStraightPaths extends Component {
           for (let tSegi = 0; tSegi < tSegments.length; tSegi++) {
             let currentSegment = tSegments[tSegi];
             if (currentSegment.endsIn(px,py)) {              
-              lp.push(currentSegment.name);
+              lp.push(currentSegment);
             } else if (currentSegment.isContaining(px,py)) {
-              cp.push(currentSegment.name);
+              cp.push(currentSegment);
             }
           }
           //bhma 3: An to L(p) U U(p) U C(p) periexei perissotera apo ena tmhmata
-          console.log(" L(p) is <" + JSON.stringify(lp) + "> C(p) is <" + JSON.stringify(cp) + "> U(p) is <" + JSON.stringify(up));
-          
-        }
+          let allTogether = lp.concat(cp).concat(up);          
+          //i could not make Set() work so i used this trick from https://stackoverflow.com/questions/1960473/get-all-unique-values-in-an-array-remove-duplicates
+          let union = allTogether.filter((value,index,self) => { return self.indexOf(value)  === index});
+          console.log(" L(p) is <" + JSON.stringify(lp) + "> C(p) is <" + JSON.stringify(cp) + "> U(p) is <" + JSON.stringify(up) + "> alltoghether <" + JSON.stringify(allTogether)  + "> union is <" + JSON.stringify(union) + ">");
+          //bhma 4: Anaferoyme to p ws shmeio tomhs ka8ws kai ta L(p),U(p) kai C(p)
+          if (union.size > 1) {
+            console.log ("SUCCESS !!! point <" + p.name + "> is an intersection point");
+          }
+          //bhma 5: Diagrafoyme apo thn T ta tmhmata toy L(p) u C(p)
+          let lpUnionCp = lp.concat(up);
+          for (let iUnionIdx = 0; iUnionIdx < lpUnionCp.length; iUnionIdx++) {
+            btreeT.removeByName(lpUnionCp[iUnionIdx]);
+          }
+          //bhma 6: Eisagoyme sthn T ta tmhmata toy U(p) u C(p)
+          let UpUnionCp = up.concat(cp);
+          for (let iUpUnionCp = 0;iUpUnionCp < UpUnionCp.length; iUpUnionCp++) {
+            //if T does not contain an item, i add it
+            if (btreeT.getLeafByName(UpUnionCp[iUpUnionCp]).length === 0) {
+              console.log("As part of step 7 i insert element <" + UpUnionCp[iUpUnionCp].name + ">");
+              btreeT.insertNew(UpUnionCp[iUpUnionCp]);
+            }
+          }
+          //bhma 8: 
+         if (UpUnionCp.length === 0) {
+           //bhma 9:
+           let ln = -1,rn=-1;
+           if (lp.length > 0) {
+            for (let kk = 0; kk < tSegments.length; kk++) {
+              if (tSegments[kk].compareTo(lp[0]) === 0) {
+                ln=kk-1;
+                rn=kk+1;
+                break;
+              }
+            }
+            if (ln < 0) { ln = -1;}
+            if (rn > tSegments.length) { rn = -1;}
+             if (ln > 0 ) { console.log("left neighbor is <" + tSegments[ln].name)}
+             if (rn > 0 && rn < tSegments.length) { console.log("right neighbor is <" + tSegments[rn].name)}
+             if ((ln > 0) && (rn > 0 && rn<tSegments.length)) {
+               let sl = tSegments[ln];
+               let sr = tSegments[rn];
+               let newPoint = this.eyreshNeoySymbantos(sl,sr,p);
+             }
+           }
+         }
+         //bhma 11: estw s' to akraio aristero tmhma toy U(p) U C(p) sthn T
+         //bhma 14: estw s'' to akraio de3io tmhma toy U(p) U C(p) sthn T
+         else {
+           let stonosIdx = -1;
+           let sDystonosIdx = -1;
+          for (let uiup = 0; uiup < UpUnionCp.length;uiup++) {
+            
+          for (let kkk = 0; kkk < tSegments.length; kkk++) {
+            if (tSegments[kkk].compareTo(UpUnionCp[uiup]) === 0) {
+             if (kkk < stonosIdx) {
+               stonosIdx = kkk;
+             }
+             if (kkk > sDystonosIdx) {
+               sDystonosIdx = kkk;
+             }
+            } //if found segment in leafs
+          }  //for all segments known
+          } //for all elements of U(p) u C(p)
+          if (stonosIdx > -1) { 
+            console.log("leftmost element sTonos is <" + tSegments[stonosIdx])
+            let sTonos = tSegments[stonosIdx];
+            //bhma 12: estw sl o aristeros geitonas toy sTonos sthn T
+            if (stonosIdx > 1) {              
+              let sl = tSegments[stonosIdx-1]
+              this.eyreshNeoySymbantos(sl,sTonos,p);
+            }
+          }
+          //bhma 15:
+          if (sDystonosIdx > -1 && sDystonosIdx < (tSegments.length-1)) {
+            let sDystonos = tSegments[sDystonosIdx];
+            let sr = tSegments[sDystonosIdx+1];
+            this.eyreshNeoySymbantos(sDystonos,sr,p);
+          }
+         }
+      
+        } //of for in Qi
+      } //while bTreeQ is not empty
         const CANVAS_WIDTH=500;
         const CANVAS_HEIGHT=500;
     

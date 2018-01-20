@@ -121,7 +121,16 @@ class AVLTreeAlwaysLeafs {
     return this.getmin(treeRoot.left);
   } 
   
-
+ removeByName = (nameArray) => {
+   for (let i = 0; i < nameArray.length; i++) {
+     let aName = nameArray[i];
+    let leafs = this.getLeafByName(aName);
+    for (let j = 0; j < leafs.length; j++) {
+      let aNode = leafs[j];
+      this.removeNew(aNode);
+    }
+   }
+ }
  removeNew = (node) =>{
     console.log("On remove new <" + node.name + ">");
     if (!this.root){ 
@@ -272,6 +281,14 @@ class AVLTreeAlwaysLeafs {
       return this.getRightmostNodeOf(parentNotNull.right);
     }
 
+    getLeftmostNodeOf = (parentNotNull) => {
+      if (! parentNotNull.left) {
+        return parentNotNull;
+      }
+      return this.LefttmostNodeOf(parentNotNull.left);
+    }
+
+
     bfs_traversal = () => {
       if (this.root === null) {
         return [];
@@ -286,6 +303,21 @@ class AVLTreeAlwaysLeafs {
       return arr 
     } 
     
+    getLeafByName = (nodeName) => {
+      if (this.root === null) {
+        return [];
+      }
+      let queue = [this.root], arr = []
+      while (queue.length > 0){
+        let aTreeNode = queue.shift();
+        if ((!aTreeNode.left) && (!aTreeNode.right) && (aTreeNode.name === nodeName )) {
+          arr.push(aTreeNode);
+        }
+        if (aTreeNode.left){ queue.push(aTreeNode.left) } 
+        if(aTreeNode.right){ queue.push(aTreeNode.right) } 
+      }
+      return arr 
+    }
 } //of class
 
 export default AVLTreeAlwaysLeafs;
