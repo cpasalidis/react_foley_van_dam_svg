@@ -233,13 +233,13 @@ class AVLTreeAlwaysLeafs {
     return this.total_nodes;
   }
 
-  leafsInOrderNew = () =>{
+  leafsInOrderNew = (isIncludingOnlyNames) =>{
     let result = [];
     if (! this.root) { return result; }
-    return result.concat(this.leafsInOrder(this.root));
+    return result.concat(this.leafsInOrder(this.root,isIncludingOnlyNames));
   }
 
-   leafsInOrder = (treeRoot) =>{
+   leafsInOrder = (treeRoot, isIncludingOnlyNames) =>{
      let result = [];
      if (! treeRoot) {
        return result;
@@ -249,7 +249,11 @@ class AVLTreeAlwaysLeafs {
      //console.log("leafsinorder: name <" + treeRoot.name + "> left <" + leftName + "> right <" + rightName + ">");
      if ((! treeRoot.left) && (! treeRoot.right)) {
        //leaf node...return name
-       return result.concat([treeRoot.name]);
+       if (isIncludingOnlyNames) {
+        return result.concat([treeRoot.name]);
+       }  else {
+        return result.concat([treeRoot]);
+       }
      }
      if (treeRoot.left) {
        result =  result.concat(this.leafsInOrder(treeRoot.left));
@@ -267,6 +271,21 @@ class AVLTreeAlwaysLeafs {
       }
       return this.getRightmostNodeOf(parentNotNull.right);
     }
+
+    bfs_traversal = () => {
+      if (this.root === null) {
+        return [];
+      }
+      let queue = [this.root], arr = []
+      while (queue.length > 0){
+        let aTreeNode = queue.shift();
+        arr.push(aTreeNode);
+        if (aTreeNode.left){ queue.push(aTreeNode.left) } 
+        if(aTreeNode.right){ queue.push(aTreeNode.right) } 
+      }
+      return arr 
+    } 
+    
 } //of class
 
 export default AVLTreeAlwaysLeafs;

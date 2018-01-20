@@ -6,7 +6,7 @@ class AVLTree{
   } 
   
   insertNew = (node) =>{
-    console.log("On insert new of avl tree <" + node.name + ">");
+    //console.log("On insert new of avl tree <" + node.name + ">");
     if (! this.root){ 
       console.log("insert at root of tree ");    
     } 
@@ -15,7 +15,7 @@ class AVLTree{
   }
 
   insert = (parent,node) =>{
-    console.log("on insert of avl tree");
+    //console.log("on insert of avl tree");
     let nodeName = node ? node.name: '';
     let parentName = parent ? parent.name : '';
    // console.log("On insert <" + nodeName + "> root of subtree is <" + parentName + ">");  
