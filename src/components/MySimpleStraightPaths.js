@@ -15,6 +15,7 @@ class MySimpleStraightPaths extends Component {
         this.eyreshNeoySymbantos = this.eyreshNeoySymbantos.bind(this);
         this.eyreshTomwnAVLTree = this.eyreshTomwnAVLTree.bind(this);
         this.eyreshNeoySymbantosHc = this.eyreshNeoySymbantosHc.bind(this);
+        this.eyreshTomwnBruteForce = this.eyreshTomwnBruteForce.bind(this);
     }
 
     avlTreeTests = (mesh,btreeQ,btreeT) => {
@@ -46,12 +47,13 @@ class MySimpleStraightPaths extends Component {
 
 
         /** given line segments sl,sr and a point p, returns the intersection point of sl,sr below p. If does not exist such intersection point returns null */
-        eyreshNeoySymbantosHc = () => {
+        //eyreshNeoySymbantosHc = () => {
+          eyreshNeoySymbantosHc = (s1p1x,s1p1y,s1p2x,s1p2y,s2p1x,s2p1y,s2p2x,s2p2y) => {
           //https://www.geeksforgeeks.org/program-for-point-of-intersection-of-two-lines/
           //determine intersection of sl,sr
           
-          let s1p1x=150,s1p1y=220,s1p2x=200,s1p2y=10;
-          let s2p1x=150,s2p1y=7,s2p2x=225,s2p2y=140;
+          //let s1p1x=150,s1p1y=220,s1p2x=200,s1p2y=10;
+          //let s2p1x=150,s2p1y=7,s2p2x=225,s2p2y=140;
 
           ////let s1p1x=1,s1p1y=1,s1p2x=4,s1p2y=4;
           ////let s2p1x=1,s2p1y=8,s2p2x=2,s2p2y=4;
@@ -99,10 +101,52 @@ class MySimpleStraightPaths extends Component {
               //if its inside the segments, check if its below p
               if (xInsideSl && yInsideSl && xInsideSr && yInsideSr ) {
                 console.log("Found intersectionPoint <" + x + "::" + y + ">");
+                return [x,y];
               }
             } //of determinant != 0
-            return null;
+            return [];
         } //of eyreshNeoySymbantos method
+
+
+/** eyresh tomwn ey8ygrammwn tmhmatwn xrhsimopoiwntas arrays gia tis domes dedomenwn Q kai T */
+eyreshTomwnBruteForce = (mesh) => {
+  let res = []; //contains arrays each with [x,y,e1,e2]
+  let meshEdges = mesh.edges;
+  let meshVertices = mesh.vertices;        
+  //
+  let setQ = new Set();
+  let comparisonFunction = (a,b) => { return b.compareTo(a);}
+  let getDataStructure = (aSet) => { return Array.from(aSet).sort(comparisonFunction); }
+  let printNames = (aName,anIterableStruct) => { 
+    let res = ""+ aName + " <<<";
+    for (let item of anIterableStruct) {
+      res += item.name + ","              
+    }
+    res += ">>>";
+    console.log(res);
+  }
+  for (let i = 0; i < meshEdges.length; i++) {
+      let aSegment = meshEdges[i];
+      let s1 = meshVertices[aSegment[EDGE_I]], s2 = meshVertices[aSegment[EDGE_J]];
+      let e1x1 = s1.X(),e1y1=s1.Y(),e1x2=s2.X(),e1y2=s2.Y();
+    for (let j = i+1; j < meshEdges.length;j++) {
+      console.log("eyreshTomwnBruteForce checking edges <" + i + " and "  + j + ">");
+      let anotherSegment = meshEdges[j];
+      let s1 = meshVertices[anotherSegment[EDGE_I]], s2 = meshVertices[anotherSegment[EDGE_J]];
+      let e2x1 = s1.X(),e2y1=s1.Y(),e2x2=s2.X(),e2y2=s2.Y();
+      let intersectionPoint = this.eyreshNeoySymbantosHc(e1x1,e1y1,e1x2,e1y2,e2x1,e2y1,e2x2,e2y2);
+      if (intersectionPoint.length > 0) {
+        let x = intersectionPoint[0];
+        let y = intersectionPoint[1];
+        console.log("...point <"  + x  + "::" + y  + "> is intersection of edges <" + i + " and " + j + ">");
+        res.push([x,y,i,j]);
+      } else {
+        console.log("... not found");
+      }
+    }
+  }
+  return res;  
+} //of method eyreshTomwnBruteForce()
 
 
     /** given line segments sl,sr and a point p, returns the intersection point of sl,sr below p. If does not exist such intersection point returns null */
@@ -479,8 +523,14 @@ class MySimpleStraightPaths extends Component {
           //mesh.printInfo();
           //this.eyreshTomwnAVLTree(mesh,edgesStartingFromVertex);
           //this.eyreshNeoySymbantosHc();
-          this.eyreshTomwnArrays(mesh,edgesStartingFromVertex);
-          
+          //this.eyreshTomwnArrays(mesh,edgesStartingFromVertex);
+          let intersections  = this.eyreshTomwnBruteForce(mesh);
+          console.log("=======================>");
+          for (let inter of intersections) {
+            console.log("Point " + inter[0] + "::" + inter[1] + " is intersection of edges ==> " + inter[2] + " - " + inter[3]);
+          }
+          console.log("<=======================");
+
             const CANVAS_WIDTH=500;
             const CANVAS_HEIGHT=500;
         
