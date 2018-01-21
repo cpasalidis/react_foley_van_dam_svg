@@ -13,19 +13,19 @@ class TreeNodeWithLineSegment extends TreeNode {
     }
 
     X1 = () => {
-        this.data[this.START][this.X]
+        return this.data[this.START][this.X]
     }
 
     Y1 = () => {
-        this.data[this.START][this.Y]
+        return this.data[this.START][this.Y]
     }
 
     X2 = () => {
-        this.data[this.END][this.X]
+        return this.data[this.END][this.X]
     }
 
     Y2 = () => {
-        this.data[this.END][this.Y]
+        return this.data[this.END][this.Y]
     }
 
 
