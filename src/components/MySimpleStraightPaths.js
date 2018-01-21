@@ -14,6 +14,7 @@ class MySimpleStraightPaths extends Component {
         this.makemesh = this.makemesh.bind(this);
         this.eyreshNeoySymbantos = this.eyreshNeoySymbantos.bind(this);
         this.eyreshTomwnAVLTree = this.eyreshTomwnAVLTree.bind(this);
+        this.eyreshNeoySymbantosHc = this.eyreshNeoySymbantosHc.bind(this);
     }
 
     avlTreeTests = (mesh,btreeQ,btreeT) => {
@@ -43,22 +44,86 @@ class MySimpleStraightPaths extends Component {
 
     }
 
+
+        /** given line segments sl,sr and a point p, returns the intersection point of sl,sr below p. If does not exist such intersection point returns null */
+        eyreshNeoySymbantosHc = () => {
+          //https://www.geeksforgeeks.org/program-for-point-of-intersection-of-two-lines/
+          //determine intersection of sl,sr
+          
+          let s1p1x=150,s1p1y=220,s1p2x=200,s1p2y=10;
+          let s2p1x=150,s2p1y=7,s2p2x=225,s2p2y=140;
+
+          ////let s1p1x=1,s1p1y=1,s1p2x=4,s1p2y=4;
+          ////let s2p1x=1,s2p1y=8,s2p2x=2,s2p2y=4;
+
+          ////let s1p1x=1,s1p1y=1,s1p2x=4,s1p2y=4;
+          ////let s2p1x=2,s2p1y=0,s2p2x=2,s2p2y=5;
+
+
+          //console.log("eyreshNeoySymbantos <" + segl + "::" + segr + ">");
+             // Line AB represented as a1x + b1y = c1
+             console.log("-----> " + s1p1x + "," + s1p1y + "," + s1p2x + "," + s1p2y);
+             let a1 = s1p2y - s1p1y;
+             let b1 = s1p1x -s1p2x;
+             let  c1 = a1*(s1p1x) + b1*(s1p1y);
+            console.log("eyreshNeoySymbantos line1 is <" + a1 + "x" + " + " + b1 + "y = " + c1 );
+             // Line CD represented as a2x + b2y = c2
+             console.log("----->> " + s2p1x + "," + s2p1y + "," + s2p2x + "," + s2p2y);
+             let a2 = s2p2y - s2p1y;
+             let b2 = s2p1x - s2p2x;
+             let  c2 = a2*(s2p1x) + b2*(s2p1y);
+             console.log("eyreshNeoySymbantos line2 is <" + a2 + "x" + " + " + b2 + "y = " + c2 );
+    
+             let  determinant = a1*b2 - a2*b1;
+            if (determinant === 0) {
+              //lines are parallel
+              console.log("eyreshNeoySymbantos : parallel lines");
+            } 
+          
+            if (determinant !== 0) {
+              let xd =(b2*c1 - b1*c2)/determinant;
+              let yd = (a1*c2 - a2*c1)/determinant;
+              let x = parseInt(xd,10);
+              let y = parseInt(yd,10);
+              console.log("eyreshNeoySymbantos : determinant is " + determinant + " " + xd + " " + yd + " x and y are <" + x + "::" + y + ">");
+              //ok we got the point, check if is inside the segments
+              
+              let xInsideSl = (Math.min(s1p1x,s1p2x) <= x) && (x <= Math.max(s1p1x,s1p2x));
+              let yInsideSl = (Math.min(s1p1y,s1p2y) <= y) && (y <= Math.max(s1p1y,s1p2y));
+              //...
+              let xInsideSr = (Math.min(s2p1x,s2p2x) <= x) && (x <= Math.max(s2p1x,s2p2x));
+              let yInsideSr = (Math.min(s2p1y,s2p2y) <= y) && (y <= Math.max(s2p1y,s2p2y));
+              console.log(" " + Math.min(s1p1x,s1p2x) + " " + x + " " + Math.max(s1p1x,s1p2x) + " " + Math.min(s2p1x,s2p2x) + " " + x + " " + Math.max(s2p1x,s2p2x) );              
+              console.log(" " + Math.min(s1p1y,s1p2y) + " " + y + " " + Math.max(s1p1y,s1p2y) + " " + Math.min(s2p1y,s2p2y) + " " + y + " " + Math.max(s2p1y,s2p2y) );              
+              console.log("minmax <" + xInsideSl + " " + yInsideSr + " " + xInsideSr + " " + yInsideSr);
+              //if its inside the segments, check if its below p
+              if (xInsideSl && yInsideSl && xInsideSr && yInsideSr ) {
+                console.log("Found intersectionPoint <" + x + "::" + y + ">");
+              }
+            } //of determinant != 0
+            return null;
+        } //of eyreshNeoySymbantos method
+
+
     /** given line segments sl,sr and a point p, returns the intersection point of sl,sr below p. If does not exist such intersection point returns null */
     eyreshNeoySymbantos = (segl,segr,pRef) => {
       //https://www.geeksforgeeks.org/program-for-point-of-intersection-of-two-lines/
       //determine intersection of sl,sr
       console.log("eyreshNeoySymbantos <" + segl + "::" + segr + ">");
+       //
+        let s1p1x =segl.X1() ,s1p1y =segl.Y1(),s1p2x = segl.X2(),s1p2y =segl.Y2();
+        let s2p1x = segr.X1(), s2p1y = segr.Y1(), s2p2x =segr.X2(), s2p2y =segr.Y2();
          // Line AB represented as a1x + b1y = c1
-         console.log("-----> " + segl.X1() + "," + segl.X2() + "," + segl.Y1() + "," + segl.Y2());
-         let a1 = segl.Y2() - segl.Y1();
-         let b1 = segl.X1() - segl.X2();
-         let  c1 = a1*(segl.X1()) + b1*(segl.Y1());
+         console.log("-----> " + s1p1x + "," + s1p1y + "," + s1p2x + "," + s1p2y);
+         let a1 = s1p2y - s1p1y;
+         let b1 = s1p1x -s1p2x;
+         let  c1 = a1*(s1p1x) + b1*(s1p1y);
         console.log("eyreshNeoySymbantos line1 is <" + a1 + "x" + " + " + b1 + "y = " + c1 );
          // Line CD represented as a2x + b2y = c2
-         console.log("----->> " + segr.X1() + "," + segr.X2() + "," + segr.Y1() + "," + segr.Y2());
-         let a2 = segr.Y2() - segr.Y1();
-         let b2 = segr.X1() - segr.X2();
-         let  c2 = a2*(segr.X1()) + b2*(segr.Y1());
+         console.log("----->> " + s2p1x + "," + s2p1y + "," + s2p2x + "," + s2p2y);
+         let a2 = s2p2y - s2p1y;
+         let b2 = s2p1x - s2p2x;
+         let  c2 = a2*(s2p1x) + b2*(s2p1y);
          console.log("eyreshNeoySymbantos line2 is <" + a2 + "x" + " + " + b2 + "y = " + c2 );
 
          let  determinant = a1*b2 - a2*b1;
@@ -72,13 +137,18 @@ class MySimpleStraightPaths extends Component {
           let y = parseInt((a1*c2 - a2*c1)/determinant,10);
           console.log("eyreshNeoySymbantos : x and y are <" + x + "::" + y + ">");
           //ok we got the point, check if is inside the segments
-          let xInsideSl = (Math.min(segl.X1(),segl.X2()) <= x) && (x <= Math.max(segl.X1(),segl.X2()));
-          let yInsideSl = (Math.min(segl.Y1(),segl.Y2()) <= y) && (y <= Math.max(segl.Y1(),segl.Y2()));
+          let xInsideSl = (Math.min(s1p1x,s1p2x) <= x) && (x <= Math.max(s1p1x,s1p2x));
+          let yInsideSl = (Math.min(s1p1y,s1p2y) <= y) && (y <= Math.max(s1p1y,s1p2y));
           //...
-          let xInsideSr = (Math.min(segr.X1(),segr.X2()) <= x) && (x <= Math.max(segr.X1(),segr.X2()));
-          let yInsideSr = (Math.min(segr.Y1(),segr.Y2()) <= y) && (y <= Math.max(segr.Y1(),segr.Y2()));
+          let xInsideSr = (Math.min(s2p1x,s2p2x) <= x) && (x <= Math.max(s2p1x,s2p2x));
+          let yInsideSr = (Math.min(s2p1y,s2p2y) <= y) && (y <= Math.max(s2p1y,s2p2y));
+      
+          //console.log(" " + Math.min(s1p1x,s1p2x) + " " + x + " " + Math.max(s1p1x,s1p2x) + " " + Math.min(s2p1x,s2p2x) + " " + x + " " + Math.max(s2p1x,s2p2x) );              
+          //console.log(" " + Math.min(s1p1y,s1p2y) + " " + y + " " + Math.max(s1p1y,s1p2y) + " " + Math.min(s2p1y,s2p2y) + " " + y + " " + Math.max(s2p1y,s2p2y) );              
+          //console.log("minmax <" + xInsideSl + " " + yInsideSr + " " + xInsideSr + " " + yInsideSr);
           //if its inside the segments, check if its below p
           if (xInsideSl && yInsideSl && xInsideSr && yInsideSr ) {
+            console.log("eyreshNeoySymbantos: Found intersectionPoint <" + x + "::" + y + ">");
             let tn = new Point2DTreeNode(x,y,true,[],"IntersectionPoint."+segl .name+"."+segr.name);           
             if (tn.compareTo(pRef) > 0) {
               return tn;
@@ -124,7 +194,7 @@ class MySimpleStraightPaths extends Component {
               let aSegment = meshEdges[pSeg];
               let s1 = meshVertices[aSegment[EDGE_I]], s2 = meshVertices[aSegment[EDGE_J]];
               let x1 = s1.X(),y1=s1.Y(),x2=s2.X(),y2=s2.Y();
-              let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,p.name +".seg" + pSeg) ;
+              let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,p.name +".edge" + pSeg) ;
               console.log("created <" + segForT.name + ">");
               up.push(segForT);
               setT.add(segForT);
@@ -408,6 +478,7 @@ class MySimpleStraightPaths extends Component {
           edgesStartingFromVertex[9]=[];
           //mesh.printInfo();
           //this.eyreshTomwnAVLTree(mesh,edgesStartingFromVertex);
+          //this.eyreshNeoySymbantosHc();
           this.eyreshTomwnArrays(mesh,edgesStartingFromVertex);
           
             const CANVAS_WIDTH=500;
@@ -425,7 +496,9 @@ class MySimpleStraightPaths extends Component {
                   const startpoint = mesh.vertices[edge[EDGE_I]];
                   const endpoint = mesh.vertices[edge[EDGE_J]];
                   const strokeW = 1*(index+1);
-                  return (  <line key={index} x1={startpoint.X()} y1={startpoint.Y()} x2={endpoint.X()} y2={endpoint.Y()} style={{stroke:'blue',strokeWidth:strokeW}}/>);                      
+                  let color = ((index ===2 ) || (index === 3)) ? 'red': 'blue';
+                  console.log("drawing edge "  + index +  " = " + startpoint.X() + " " + startpoint.Y()  + " " + endpoint.X() + " " + endpoint.Y());
+                  return (  <line key={index} x1={startpoint.X()} y1={startpoint.Y()} x2={endpoint.X()} y2={endpoint.Y()} style={{stroke:color,strokeWidth:strokeW}}/>);                      
                 })
               }
               </svg>
