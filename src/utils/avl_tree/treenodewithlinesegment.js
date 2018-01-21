@@ -12,6 +12,23 @@ class TreeNodeWithLineSegment extends TreeNode {
         this.contains = []; //each item is a 2element array with x,y of a contained point        
     }
 
+    X1 = () => {
+        this.data[this.START][this.X]
+    }
+
+    Y1 = () => {
+        this.data[this.START][this.Y]
+    }
+
+    X2 = () => {
+        this.data[this.END][this.X]
+    }
+
+    Y2 = () => {
+        this.data[this.END][this.Y]
+    }
+
+
     compareTo = (other) => {
         let y2 = this.data[this.END][this.Y];
         let othery2 = other.data[this.END][this.Y];
