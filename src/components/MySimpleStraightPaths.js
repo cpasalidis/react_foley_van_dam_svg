@@ -64,22 +64,22 @@ class MySimpleStraightPaths extends Component {
 
           //console.log("eyreshNeoySymbantos <" + segl + "::" + segr + ">");
              // Line AB represented as a1x + b1y = c1
-             console.log("-----> " + s1p1x + "," + s1p1y + "," + s1p2x + "," + s1p2y);
+             //ok/console.log("-----> " + s1p1x + "," + s1p1y + "," + s1p2x + "," + s1p2y);
              let a1 = s1p2y - s1p1y;
              let b1 = s1p1x -s1p2x;
              let  c1 = a1*(s1p1x) + b1*(s1p1y);
-            console.log("eyreshNeoySymbantos line1 is <" + a1 + "x" + " + " + b1 + "y = " + c1 );
+            //ok/console.log("eyreshNeoySymbantosHc line1 is <" + a1 + "x" + " + " + b1 + "y = " + c1 );
              // Line CD represented as a2x + b2y = c2
-             console.log("----->> " + s2p1x + "," + s2p1y + "," + s2p2x + "," + s2p2y);
+             //ok/console.log("----->> " + s2p1x + "," + s2p1y + "," + s2p2x + "," + s2p2y);
              let a2 = s2p2y - s2p1y;
              let b2 = s2p1x - s2p2x;
              let  c2 = a2*(s2p1x) + b2*(s2p1y);
-             console.log("eyreshNeoySymbantos line2 is <" + a2 + "x" + " + " + b2 + "y = " + c2 );
+             //ok/console.log("eyreshNeoySymbantosHc line2 is <" + a2 + "x" + " + " + b2 + "y = " + c2 );
     
              let  determinant = a1*b2 - a2*b1;
             if (determinant === 0) {
               //lines are parallel
-              console.log("eyreshNeoySymbantos : parallel lines");
+              //ok/console.log("eyreshNeoySymbantosHc : parallel lines");
             } 
           
             if (determinant !== 0) {
@@ -87,7 +87,7 @@ class MySimpleStraightPaths extends Component {
               let yd = (a1*c2 - a2*c1)/determinant;
               let x = parseInt(xd,10);
               let y = parseInt(yd,10);
-              console.log("eyreshNeoySymbantos : determinant is " + determinant + " " + xd + " " + yd + " x and y are <" + x + "::" + y + ">");
+              //ok/console.log("eyreshNeoySymbantosHc : determinant is " + determinant + " " + xd + " " + yd + " x and y are <" + x + "::" + y + ">");
               //ok we got the point, check if is inside the segments
               
               let xInsideSl = (Math.min(s1p1x,s1p2x) <= x) && (x <= Math.max(s1p1x,s1p2x));
@@ -95,12 +95,12 @@ class MySimpleStraightPaths extends Component {
               //...
               let xInsideSr = (Math.min(s2p1x,s2p2x) <= x) && (x <= Math.max(s2p1x,s2p2x));
               let yInsideSr = (Math.min(s2p1y,s2p2y) <= y) && (y <= Math.max(s2p1y,s2p2y));
-              console.log(" " + Math.min(s1p1x,s1p2x) + " " + x + " " + Math.max(s1p1x,s1p2x) + " " + Math.min(s2p1x,s2p2x) + " " + x + " " + Math.max(s2p1x,s2p2x) );              
-              console.log(" " + Math.min(s1p1y,s1p2y) + " " + y + " " + Math.max(s1p1y,s1p2y) + " " + Math.min(s2p1y,s2p2y) + " " + y + " " + Math.max(s2p1y,s2p2y) );              
-              console.log("minmax <" + xInsideSl + " " + yInsideSr + " " + xInsideSr + " " + yInsideSr);
+              //ok/console.log(" " + Math.min(s1p1x,s1p2x) + " " + x + " " + Math.max(s1p1x,s1p2x) + " " + Math.min(s2p1x,s2p2x) + " " + x + " " + Math.max(s2p1x,s2p2x) );              
+              //ok/console.log(" " + Math.min(s1p1y,s1p2y) + " " + y + " " + Math.max(s1p1y,s1p2y) + " " + Math.min(s2p1y,s2p2y) + " " + y + " " + Math.max(s2p1y,s2p2y) );              
+              //ok/console.log("eyreshNeoySymbantosHc: minmax <" + xInsideSl + " " + yInsideSr + " " + xInsideSr + " " + yInsideSr);
               //if its inside the segments, check if its below p
               if (xInsideSl && yInsideSl && xInsideSr && yInsideSr ) {
-                console.log("Found intersectionPoint <" + x + "::" + y + ">");
+                //ok/console.log("eyreshNeoySymbantosHc: Found intersectionPoint <" + x + "::" + y + ">");
                 return [x,y];
               }
             } //of determinant != 0
@@ -153,62 +153,40 @@ eyreshTomwnBruteForce = (mesh) => {
     eyreshNeoySymbantos = (segl,segr,pRef) => {
       //https://www.geeksforgeeks.org/program-for-point-of-intersection-of-two-lines/
       //determine intersection of sl,sr
-      console.log("eyreshNeoySymbantos <" + segl + "::" + segr + ">");
+      console.log("eyreshNeoySymbantos <" + this.segmentToString(segl) + "::" + this.segmentToString(segr) + ">");
+      let res=[];
        //
         let s1p1x =segl.X1() ,s1p1y =segl.Y1(),s1p2x = segl.X2(),s1p2y =segl.Y2();
         let s2p1x = segr.X1(), s2p1y = segr.Y1(), s2p2x =segr.X2(), s2p2y =segr.Y2();
-         // Line AB represented as a1x + b1y = c1
-         console.log("-----> " + s1p1x + "," + s1p1y + "," + s1p2x + "," + s1p2y);
-         let a1 = s1p2y - s1p1y;
-         let b1 = s1p1x -s1p2x;
-         let  c1 = a1*(s1p1x) + b1*(s1p1y);
-        console.log("eyreshNeoySymbantos line1 is <" + a1 + "x" + " + " + b1 + "y = " + c1 );
-         // Line CD represented as a2x + b2y = c2
-         console.log("----->> " + s2p1x + "," + s2p1y + "," + s2p2x + "," + s2p2y);
-         let a2 = s2p2y - s2p1y;
-         let b2 = s2p1x - s2p2x;
-         let  c2 = a2*(s2p1x) + b2*(s2p1y);
-         console.log("eyreshNeoySymbantos line2 is <" + a2 + "x" + " + " + b2 + "y = " + c2 );
-
-         let  determinant = a1*b2 - a2*b1;
-        if (determinant === 0) {
-          //lines are parallel
-          console.log("eyreshNeoySymbantos : parallel lines");
-        } 
-      
-        if (determinant !== 0) {
-          let x = parseInt((b2*c1 - b1*c2)/determinant,10);
-          let y = parseInt((a1*c2 - a2*c1)/determinant,10);
-          console.log("eyreshNeoySymbantos : x and y are <" + x + "::" + y + ">");
-          //ok we got the point, check if is inside the segments
-          let xInsideSl = (Math.min(s1p1x,s1p2x) <= x) && (x <= Math.max(s1p1x,s1p2x));
-          let yInsideSl = (Math.min(s1p1y,s1p2y) <= y) && (y <= Math.max(s1p1y,s1p2y));
-          //...
-          let xInsideSr = (Math.min(s2p1x,s2p2x) <= x) && (x <= Math.max(s2p1x,s2p2x));
-          let yInsideSr = (Math.min(s2p1y,s2p2y) <= y) && (y <= Math.max(s2p1y,s2p2y));
-      
-          //console.log(" " + Math.min(s1p1x,s1p2x) + " " + x + " " + Math.max(s1p1x,s1p2x) + " " + Math.min(s2p1x,s2p2x) + " " + x + " " + Math.max(s2p1x,s2p2x) );              
-          //console.log(" " + Math.min(s1p1y,s1p2y) + " " + y + " " + Math.max(s1p1y,s1p2y) + " " + Math.min(s2p1y,s2p2y) + " " + y + " " + Math.max(s2p1y,s2p2y) );              
-          //console.log("minmax <" + xInsideSl + " " + yInsideSr + " " + xInsideSr + " " + yInsideSr);
-          //if its inside the segments, check if its below p
-          if (xInsideSl && yInsideSl && xInsideSr && yInsideSr ) {
-            console.log("eyreshNeoySymbantos: Found intersectionPoint <" + x + "::" + y + ">");
-            let tn = new Point2DTreeNode(x,y,true,[],"IntersectionPoint."+segl .name+"."+segr.name);           
-            if (tn.compareTo(pRef) > 0) {
-              return tn;
-            }
-          }
-        } //of determinant != 0
-        return null;
+        let intersectionPoint = this.eyreshNeoySymbantosHc(s1p1x,s1p1y,s1p2x,s1p2y,s2p1x,s2p1y,s2p2x,s2p2y);
+        if (intersectionPoint.length > 0) {
+          let x = intersectionPoint[0];
+          let y = intersectionPoint[1];
+          console.log("...point <"  + x  + "::" + y  + "> is intersection of edges <" + segl + " and " +segr+ ">");
+          segl.setContaining(x,y);
+          segr.setContaining(x,y);
+          res.push([x,y,segl.name,segr.name]);
+        } else {
+          console.log("... not found");
+        }
+        return res;   
     } //of eyreshNeoySymbantos method
+
+    segmentToString = (aSeg) =>  {
+      return aSeg.name + "," +  aSeg.X1() + "," + aSeg.Y1() + "," + aSeg.X2() + "," + aSeg.Y2()
+    }
 
  /** eyresh tomwn ey8ygrammwn tmhmatwn xrhsimopoiwntas arrays gia tis domes dedomenwn Q kai T */
  eyreshTomwnArrays = (mesh,edgesStartingFromVertex) => {
+          let methodResult = []; //each result is an array [x,y,U(p),L(p),C(p)]
           let meshEdges = mesh.edges;
           let meshVertices = mesh.vertices;        
           //
           let setQ = new Set();
-          let comparisonFunction = (a,b) => { return b.compareTo(a);}
+          let comparisonFunction = (a,b) => { 
+            //ok/console.log("comparisonFuncttion <" + b.name + "> <" + a.name + ">" + " = " + a.compareTo(b));
+            return b.compareTo(a); //if i put b.compareTo(a) i get sorting by y coordinate ascending order... 
+          }
           let getDataStructure = (aSet) => { return Array.from(aSet).sort(comparisonFunction); }
           let printNames = (aName,anIterableStruct) => { 
             let res = ""+ aName + " <<<";
@@ -218,19 +196,35 @@ eyreshTomwnBruteForce = (mesh) => {
             res += ">>>";
             console.log(res);
           }
+          
+          let pointToString = (aPoint) => {
+            return aPoint.name + "," + aPoint.X() + "," + aPoint.Y();
+          }
           //add the initial data to the data structure      
           mesh.vertices.map((vertex,index) => {
-            let tn = new Point2DTreeNode(vertex.X(),vertex.Y(),true,edgesStartingFromVertex[index],"point"+index);
+            let tn = new Point2DTreeNode(vertex.X(),vertex.Y(),true,edgesStartingFromVertex[index],"point"+(index+1));
             setQ.add(tn);
             return tn;
           })
           //for (let p of setQ) { console.log("::" + p.name)}
           let dataStructureQ =  getDataStructure(setQ);
+          printNames("eyreshTomwnArrays: initial Q",dataStructureQ);
+          //just a test of the sorting of segments
+          let testSetT = new Set();
+          meshEdges.map((edge,index)  => {
+            let s1 = meshVertices[edge[EDGE_I]], s2 = meshVertices[edge[EDGE_J]];
+            let x1 = s1.X(),y1=s1.Y(),x2=s2.X(),y2=s2.Y();
+            let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,"tSE" +".edge" + (index) );
+            testSetT.add(segForT);          
+          })
+          let testStructureT = getDataStructure(testSetT);
+          printNames("eyreshTomwnArrays: testSetWithAllEdges",testStructureT);
           //...
           let setT = new Set();
           let p = dataStructureQ.shift();
           setQ.delete(p);
           while (p) {
+            console.log("eyreshTomwnArrays: =====> e3etazw apo thn Q to shmeio <" + pointToString(p) + ">");
             //bhma1:            
             let pSegments = p.getUserData();
             let up=[]; //segments starting with p
@@ -239,16 +233,17 @@ eyreshTomwnBruteForce = (mesh) => {
               let s1 = meshVertices[aSegment[EDGE_I]], s2 = meshVertices[aSegment[EDGE_J]];
               let x1 = s1.X(),y1=s1.Y(),x2=s2.X(),y2=s2.Y();
               let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,p.name +".edge" + pSeg) ;
-              console.log("created <" + segForT.name + ">");
+              console.log("eyreshTomwnArrays:pros8etw sto T  <" + this.segmentToString(segForT) + ">");
               up.push(segForT);
               setT.add(segForT);
             }
             //bhma2:
-            let pIndex = p.name.substring("point".length);
+            let pIndex = p.name.substring("point".length)-1;
             let lp=[],cp=[];
               let tSegments =getDataStructure(setT);
               for (let currentSegment of tSegments) {
-                let px = meshVertices[pIndex].X(),py = meshVertices[pIndex].Y();
+                console.log("eyreshTomwnArrays: bhma2: koitazw to shmeio <" + pointToString(p) + "> kai to segment <" + this.segmentToString(currentSegment) + ">");
+                let px = p.X(),py = p.Y();
                 if (currentSegment.endsIn(px,py)) {  lp.push(currentSegment);
                 } else if (currentSegment.isContaining(px,py)) { cp.push(currentSegment); }
               }
@@ -262,7 +257,8 @@ eyreshTomwnBruteForce = (mesh) => {
               //bhma 4: Anaferoyme to p ws shmeio tomhs ka8ws kai ta L(p),U(p) kai C(p)
               if (union.size > 1) {
                 console.log ("SUCCESS !!! point <" + p.name + "> is an intersection point");
-                return;
+                let anIntersectionPoint = [p.X(),p.Y(),up,lp,cp];
+                methodResult.push(anIntersectionPoint);
               }
               //bhma 5: Diagrafoyme apo thn T ta tmhmata toy L(p) u C(p)
               let lpUnionCp = lp.concat(up);
@@ -275,29 +271,44 @@ eyreshTomwnBruteForce = (mesh) => {
                 setT.add(upcpSeg);
               }
               //bhma 8: 
-              console.log("bhma8 U(p) U C(p) <" + UpUnionCp.length + ">");
+              //se ka8e eswteriko kombo (v) elegxoyme an to shmeio (p) einai aristera h de3ia toy tmhmatos poy einai apo8hkeymeno ston (v) Analoga me
+              //to apotelesma toy elegxoy akoloy8oyme to aristero h to de3io ypodentro toy (v) gia na katalh3oyme telika se kapoio fyllo. To tmhma poy anazhtoyme
+              //einai apo8hkeymeno eite se ayto to fyllo eite se ekeino poy brisketai amesws sta aristera toy. Me paromoio tropo mporoyme na broyme kai to tmhma poy
+              //brisketai akribws sta de3ia toy p h ta tmhmata poy periexoyn to p.
+              console.log("bhma8 U(p) U C(p) <" + UpUnionCp.length + "> L(p) " + lp.length);
+              let isLeftOf = ( segment, askPoint) => {
+                return ((segment.X2() - segment.X1())*(askPoint.Y() - segment.Y1()) - (segment.Y2() - segment.Y1())*(askPoint.X() - segment.X1())) > 0;
+            }
+            let isRightOf = ( segment, askPoint) => {
+              return ((segment.X2() - segment.X1())*(askPoint.Y() - segment.Y1()) - (segment.Y2() - segment.Y1())*(askPoint.X() - segment.X1())) < 0;
+            }
               tSegments = getDataStructure(setT);
+              printNames("bhma 9:",tSegments);              
               if (UpUnionCp.length === 0) {
                 //bhma 9:
                 let ln = -1,rn=-1;
                 if (lp.length > 0) {
                   for (let kk = 0; kk < tSegments.length; kk++) {
-                    if (tSegments[kk].compareTo(lp[0]) === 0) {
-                      ln=kk-1;
-                      rn=kk+1;
-                      break;
+                    if (isLeftOf(tSegments[kk],p)) {
+                      if (ln< 0) { ln = kk; } else { ln=Math.max(ln,kk); };
+                    }
+                    if (isRightOf(tSegments[kk],p)) {
+                      if (rn < 0) { rn = kk;} else {rn=Math.min(ln,kk);}
                     }
                   }
+                  console.log("bhma 8,9: aristeros kai de3ios geitonas toy p " + ln + "," + rn);
                   if (ln < 0) { ln = -1;}
                   if (rn > tSegments.length) { rn = -1;}
-                  if (ln > 0 ) { console.log("left neighbor is <" + tSegments[ln].name)}
-                  if (rn > 0 && rn < tSegments.length) { console.log("right neighbor is <" + tSegments[rn].name)}
+                  if (ln > 0 ) { console.log("bhma9: left neighbor is <" + tSegments[ln].name)}
+                  if (rn > 0 && rn < tSegments.length) { console.log("bhma9: right neighbor is <" + tSegments[rn].name)}
                   if ((ln > 0) && (rn > 0 && rn<tSegments.length)) {
                     let sl = tSegments[ln];
                     let sr = tSegments[rn];
-                    let newPoint = this.eyreshNeoySymbantos(sl,sr,p);
-                    if (newPoint) {
-                      setQ.add(newPoint);
+                    let newpoint = this.eyreshNeoySymbantos(sl,sr,p);
+                    if (newpoint.length > 0) {
+                      let newpTn = new Point2DTreeNode(newpoint[0],newpoint[1],true,[],"intersectionpoint."+ln+"_" + rn);  
+                      console.log("eyreshTomwnArrays:bhma8,9: bazw sthn Q to <"+newpTn.name+">")
+                      setQ.add(newpTn);
                     }
                   }
                 }
@@ -311,12 +322,8 @@ eyreshTomwnBruteForce = (mesh) => {
                  console.log("bhma11,14: " + uiUp.name);
                 for (let kkk = 0; kkk < tSegments.length; kkk++) {
                   if (tSegments[kkk].compareTo(uiUp) === 0) {
-                  if (kkk < stonosIdx) {
-                    stonosIdx = kkk;
-                  }
-                  if (kkk > sDystonosIdx) {
-                    sDystonosIdx = kkk;
-                  }
+                  stonosIdx = Math.min(kkk,stonosIdx);
+                  sDystonosIdx = Math.max(kkk,sDystonosIdx);
                   } //if found segment in leafs
                 }  //for all segments known
                 } //for all elements of U(p) u C(p)
@@ -328,8 +335,13 @@ eyreshTomwnBruteForce = (mesh) => {
                   if (stonosIdx > 0) {              
                     let sl = tSegments[stonosIdx-1]
                     console.log(" sl,s' are " + sl.name + "," + sTonos.name);
-                    let newPoint = this.eyreshNeoySymbantos(sl,sTonos,p);
-                    if (newPoint) { setQ.add(newPoint);}
+                    let newpoint = this.eyreshNeoySymbantos(sl,sTonos,p);
+                    if (newpoint.length > 0) { 
+                      console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ bhma 14 ~~~~~~~~~~~~~~~~" + newpoint[0][0] + " " + newpoint[0][1]);
+                      let newpTn = new Point2DTreeNode(newpoint[0][0],newpoint[0][1],true,[],"intersectionpoint."+(stonosIdx-1)+"_" + stonosIdx);  
+                      console.log("eyreshTomwnArrays:bhma11,14: bazw sthn Q to <"+pointToString(newpTn)+">")
+                      setQ.add(newpTn);
+                    }
                   }
                 }
                 //bhma 15:
@@ -338,23 +350,31 @@ eyreshTomwnBruteForce = (mesh) => {
                   let sDystonos = tSegments[sDystonosIdx];
                   let sr = tSegments[sDystonosIdx+1];
                   console.log(" s'',sr' are " + sDystonos.name + "," + sr.name);
-                  let newPoint = this.eyreshNeoySymbantos(sDystonos,sr,p);
-                  if (newPoint) { setQ.add(newPoint);}
+                  let newpoint = this.eyreshNeoySymbantos(sDystonos,sr,p);
+                  if (newpoint.length > 0) { 
+                    console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ bhma 15 ~~~~~~~~~~~~~~~~~~~~ " + newpoint[0][0] + " " + newpoint[0][1]);
+                    let newpTn = new Point2DTreeNode(newpoint[0][0],newpoint[0][1],true,[],"intersectionpoint."+sDystonosIdx+"_" + (sDystonosIdx+1));
+                    console.log("eyreshTomwnArrays:bhma15: bazw sthn Q to <"+pointToString(newpTn)+">")
+                    setQ.add(newpTn);
+                  }
                 }
               } //of bhmata 11,14
             //
             printNames("setTAfter::" + p.name,setT);            
+            dataStructureQ =  getDataStructure(setQ);
+            printNames("=-==-==-==> eyreshTomwnArrays: after processing::"+p.name,dataStructureQ);  
             p = dataStructureQ.shift();
             setQ.delete(p);
           } //of while p
           //console.log("datastructureQ is <" + JSON.stringify(dataStructureQ) + ">");
           //console.log("after sort")
           //for (let Qiii = 0; Qiii< dataStructureQ.length;Qiii++) { let p = dataStructureQ[Qiii]; console.log("::" + p.name)  }
-
+          return methodResult;
     } //of method eyreshTomwnArrays()
 
 
   eyreshTomwnAVLTree = (mesh,edgesStartingFromVertex) => {
+    let methodResult = []; //array of elements its element is [x,y,U(p),L(p),C(p)]
     //this is the right structure for points...i just want to test the other btree/let btree = new AVLTree(); 
     let btreeQ = new AVLTree();
     let btreeT = new AVLTreeAlwaysLeafs(); 
@@ -415,6 +435,8 @@ eyreshTomwnBruteForce = (mesh) => {
         //bhma 4: Anaferoyme to p ws shmeio tomhs ka8ws kai ta L(p),U(p) kai C(p)
         if (union.size > 1) {
           console.log ("SUCCESS !!! point <" + p.name + "> is an intersection point");
+          let anIntersectionPoint = [p.X(),p.Y(),up,lp,cp];
+          methodResult.push(anIntersectionPoint);
         }
         //bhma 5: Diagrafoyme apo thn T ta tmhmata toy L(p) u C(p)
         let lpUnionCp = lp.concat(up);
@@ -493,7 +515,7 @@ eyreshTomwnBruteForce = (mesh) => {
   makemesh = () => {      
 
           //
-          let edgesStartingFromVertex=[]; //for each vertex contains edges starting on it
+          let edgesStartingFromVertex=[]; //for each vertex contains edges starting on it. i have to make sure, that the end of the segment is after the start of the segment when epibatikh aktina is moving top to bottom
           let mesh = new Mesh1D();
           mesh.addVertex(10,200);
           mesh.addVertex(50,20);
@@ -505,29 +527,32 @@ eyreshTomwnBruteForce = (mesh) => {
           mesh.addVertex(225,140);
           mesh.addVertex(250,9);
           mesh.addVertex(300,155);
-          mesh.addEdge(0,1);
-          edgesStartingFromVertex[0]=[0];
-          edgesStartingFromVertex[1]=[];
-          mesh.addEdge(2,3);
-          edgesStartingFromVertex[2]=[1];
-          edgesStartingFromVertex[3]=[];
-          mesh.addEdge(4,6);
-          edgesStartingFromVertex[4]=[2];
-          edgesStartingFromVertex[6]=[];
-          mesh.addEdge(5,7);
-          edgesStartingFromVertex[5]=[3];
-          edgesStartingFromVertex[7]=[];
-          mesh.addEdge(8,9);
-          edgesStartingFromVertex[8]=[4];
-          edgesStartingFromVertex[9]=[];
+           //to be consisten with names of points staring from 1, i put here array subscribts starting form 1 (-1)
+            let epn = (i) => i-1;
+          mesh.addEdge(epn(1),epn(2));
+          edgesStartingFromVertex[epn(1)]=[];
+          edgesStartingFromVertex[epn(2)]=[0];
+          mesh.addEdge(epn(3),epn(4));
+          edgesStartingFromVertex[epn(3)]=[1];
+          edgesStartingFromVertex[epn(4)]=[];
+          mesh.addEdge(epn(7),epn(5));
+          edgesStartingFromVertex[epn(7)]=[2];
+          edgesStartingFromVertex[epn(5)]=[];
+          mesh.addEdge(epn(6),epn(8));
+          edgesStartingFromVertex[epn(6)]=[3];
+          edgesStartingFromVertex[epn(8)]=[];
+          mesh.addEdge(epn(9),epn(10));
+          edgesStartingFromVertex[epn(9)]=[4];
+          edgesStartingFromVertex[epn(10)]=[];
           //mesh.printInfo();
+          let intersections = [];
           //this.eyreshTomwnAVLTree(mesh,edgesStartingFromVertex);
           //this.eyreshNeoySymbantosHc();
-          //this.eyreshTomwnArrays(mesh,edgesStartingFromVertex);
-          let intersections  = this.eyreshTomwnBruteForce(mesh);
+          intersections = this.eyreshTomwnArrays(mesh,edgesStartingFromVertex);          
+          //let intersections  = this.eyreshTomwnBruteForce(mesh);          
           console.log("=======================>");
           for (let inter of intersections) {
-            console.log("Point " + inter[0] + "::" + inter[1] + " is intersection of edges ==> " + inter[2] + " - " + inter[3]);
+            console.log("Point " + inter[0] + "::" + inter[1] + " is intersection !!!! U(p) = " + inter[2] + " L(p) = " + inter[3] + "C(p) = " + [inter[4]]);
           }
           console.log("<=======================");
 
@@ -538,7 +563,8 @@ eyreshTomwnBruteForce = (mesh) => {
               <svg width={CANVAS_WIDTH} height={CANVAS_HEIGHT}>"
               {
                 mesh.vertices.map((vertex,index) => {
-                  return (  <circle key={index} cx={vertex.X()} cy={vertex.Y()} r="2" stroke="black" strokeWidth="1" fill="white"/>);                      
+                  //return (  <circle key={index} cx={vertex.X()} cy={vertex.Y()} r={(index+1)*1} stroke="black" strokeWidth="1" fill="white"/>);                      
+                  return (  <text key={index} x={vertex.X()} y={vertex.Y()} stroke="black" strokeWidth="1" fill="white">{index+1}</text>);                      
                 })
               }
               {

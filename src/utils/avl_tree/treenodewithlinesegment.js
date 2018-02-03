@@ -30,14 +30,26 @@ class TreeNodeWithLineSegment extends TreeNode {
 
 
     compareTo = (other) => {
-        let y2 = this.data[this.END][this.Y];
-        let othery2 = other.data[this.END][this.Y];
+        /*
+        let y2 = this.Y2();
+        let othery2 = other.Y2();
        let comp = y2-othery2;
        if (comp === 0) {
-           let x2 =this.data[this.END][this.X];
-           let otherx2 =  other.data[this.END][this.X];
+           let x2 =this.X2();
+           let otherx2 =  other.X2();
             comp = x2 - otherx2;
        }
+       */
+      //assume a segment if left of another when start of segment is left of start of the other
+      let x1 = this.X1();
+       let otherx1 = other.X1();
+       let comp = otherx1 - x1;
+       if (comp === 0) {
+        let x2 = this.X2();
+        let otherx2 = other.X2();
+        comp = otherx2 - x2; 
+       }
+
        return comp;
     }
 
@@ -55,7 +67,7 @@ class TreeNodeWithLineSegment extends TreeNode {
    }
 
    endsIn = (x,y) => {
-       return (this.data[this.END][this.X]) === x && (this.data[this.END][this.Y] === y);
+       return (this.X2() === x && (this.Y2() === y));
    }
 
    setContaining = (x,y) => {
