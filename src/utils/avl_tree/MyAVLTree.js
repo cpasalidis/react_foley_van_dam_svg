@@ -15,23 +15,24 @@ class AVLTree{
   }
 
   insert = (parent,node) =>{
-    //console.log("on insert of avl tree");
     let nodeName = node ? node.name: '';
     let parentName = parent ? parent.name : '';
-   // console.log("On insert <" + nodeName + "> root of subtree is <" + parentName + ">");  
+    //console.log(" On insert of avl tree <" + node + "> root of subtree is <" + parent + "> <" + (parent ? node.compareTo(parent):-1) + ">");  }
     if (! parent) {
       this.total_nodes += 1 ;     
       return node;
     } 
     //if code reaches here, treeNode exists
-    if (parent.compareTo(node) < 0){ 
+    if (node.compareTo(parent) < 0){ 
+      //console.log(" 00000000000000000000 on insert of avl tree ready to insert <" + node + "> to the left of <" + parent + ">"); }
        parent.left = this.insert(parent.left, node);
-    } else if (parent.compareTo(node) > 0){
+    } else if (node.compareTo(parent) > 0){
+      //console.log(" 00000000000000000000 on insert of avl tree ready to insert <" + node + "> to the right of <" + parent + ">"); }
        parent.right = this.insert(parent.right, node);
     } 
 
     let balance = this.get_height(parent.left) - this.get_height(parent.right);
-   // console.log("on insert ready to calculate balance. i am <" + parent.name +  " left is <"  + (parent.left ? parent.left.name : '') + " right is <" +( parent.right ? parent.right.name : '' ) + " balance is " + balance);
+   //console.log("on insert of avl tree ready to calculate balance. i am <" + parent.name +  " left is <"  + (parent.left ? parent.left.name : '') + " right is <" +( parent.right ? parent.right.name : '' ) + " balance is " + balance);
     if (balance > 1){ 
       if (this.get_height(parent.left.left) >= this.get_height(parent.left.right)){
         parent = this.rotateRight(parent);
@@ -90,7 +91,11 @@ class AVLTree{
   
 
  removeNew = (node) =>{
-    console.log("On remove new <" + node.name + ">");
+    //console.log("On remove new <" + (node ? node.name : '') + ">");
+    if (! node) {
+      console.log("request to remove new EMPTY");
+      return;
+    }
     if (!this.root){ 
       console.log("remove root of tree");    
       return null;
@@ -101,46 +106,47 @@ class AVLTree{
   }
 
 
-  remove(treeRoot, node){
+  remove(parent, node){
     let nodeName = node ? node.name : '';
-    let parentName = treeRoot ? treeRoot.name : '';
-    console.log("On remove <" + nodeName + "> root of subtree is <" + parentName + ">");  
-    if (!treeRoot) return null;
-    if (treeRoot.compareTo(node) === 0){
-      console.log("ready to actually remove " + treeRoot.name);
-      if (!treeRoot.left && !treeRoot.right){ this.total_nodes -= 1; return null; }
-      if (!treeRoot.left){ this.total_nodes -= 1; return treeRoot.right; } 
-      if (!treeRoot.right){ this.total_nodes -= 1; return treeRoot.left; } 
-      let temp_node = this.getmin(treeRoot.right);
-      treeRoot.right = this.remove(treeRoot.right, temp_node);
-    } else if (treeRoot.compareTo(node) < 0){
-      treeRoot.left = this.remove(treeRoot.left, node);
-      let childName = treeRoot.left ? treeRoot.left.name : '';
-      console.log("left of <"+treeRoot.name + "> is <" + childName + ">" )
-    } else if (treeRoot.compareTo(node) > 0){
-      treeRoot.right = this.remove(treeRoot.right, node);
-      let childName = treeRoot.right ? treeRoot.right.name: '';
-      console.log("right of <"+treeRoot.name + "> is <" + childName + ">" )
+    let parentName = parent ? parent.name : '';
+    //console.log("On remove <" + nodeName + "> root of subtree is <" + parentName + ">");  
+    if (!parent) return null;
+    if (node.compareTo(parent) === 0){
+      //console.log("ready to actually remove " + node.name );
+      if (!parent.left && !parent.right){ this.total_nodes -= 1; return null; }
+      if (!parent.left){ this.total_nodes -= 1; return parent.right; } 
+      if (!parent.right){ this.total_nodes -= 1; return parent.left; } 
+      //if code reaches here, both children exist
+      let temp_node = this.getmin(parent.right);
+      parent.right = this.remove(parent.right, temp_node);
+    } else if (node.compareTo(parent) < 0){
+      parent.left = this.remove(parent.left, node);
+      let childName = parent.left ? parent.left.name : '';
+      //console.log("left of <"+parent.name + "> is <" + childName + ">" )
+    } else if (node.compareTo(parent) > 0){
+      parent.right = this.remove(parent.right, node);
+      let childName = parent.right ? parent.right.name: '';
+      //console.log("right of <"+parent.name + "> is <" + childName + ">" )
     }
-    let balance = this.get_height(treeRoot.left) - this.get_height(treeRoot.right);
+    let balance = this.get_height(parent.left) - this.get_height(parent.right);
     if (balance > 1){ 
-      if (this.get_height(treeRoot.left.left) >= this.get_height(treeRoot.left.right)){
-        treeRoot = this.rotateRight(treeRoot);
+      if (this.get_height(parent.left.left) >= this.get_height(parent.left.right)){
+        parent = this.rotateRight(parent);
       } else {
-        treeRoot.left = this.rotateLeft(treeRoot.left);
-        treeRoot = this.rotateRight(treeRoot);
+        parent.left = this.rotateLeft(parent.left);
+        parent = this.rotateRight(parent);
       }
     } else if (balance < -1){ 
-        if (this.get_height(treeRoot.right.right) >= this.get_height(treeRoot.right.left)){
-          treeRoot = this.rotateLeft(treeRoot);
+        if (this.get_height(parent.right.right) >= this.get_height(parent.right.left)){
+          parent = this.rotateLeft(parent);
         } else {
-          treeRoot.right = this.rotateRight(treeRoot.right);
-          treeRoot = this.rotateLeft(treeRoot);
+          parent.right = this.rotateRight(parent.right);
+          parent = this.rotateLeft(parent);
         }
     } else {
-        treeRoot.height = this.set_height(treeRoot);
+      parent.height = this.set_height(parent);
     } 
-    return treeRoot;
+    return parent;
   } //of remove
   
 
@@ -198,15 +204,37 @@ class AVLTree{
      }
      return result;
     //return treeRoot ? this.leafsInOrder(treeRoot.left).concat([treeRoot.name]).concat(this.leafsInOrder(treeRoot.right)) : []
-    } 
+    }
+    
+  
+    inOrderTraversalNew = () =>{
+      let result = [];
+      if (! this.root) { return result; }
+      return result.concat(this.inOrderTraversal(this.root));
+    }
+  
+    
+    inOrderTraversal = (treeRoot) =>{
+      let result = [];
+      if (treeRoot.left) {
+        result =  result.concat(this.inOrderTraversal(treeRoot.left));
+      }
+      result = result.concat([treeRoot]);
+      if (treeRoot.right) {
+        result = result.concat(this.inOrderTraversal(treeRoot.right));
+      }
+      return result;
+     //return treeRoot ? this.leafsInOrder(treeRoot.left).concat([treeRoot.name]).concat(this.leafsInOrder(treeRoot.right)) : []
+     }
   
     bfs_traversal = () => {
       let queue = [this.root], arr = []
       while (queue.length > 0){
         let tree_node = queue.shift()
+        console.log("avl_tree:bfs_traversal got <" + tree_node.name + ">");
         arr.push(tree_node)
-        if (tree_node.left){ queue.push(tree_node.left) } 
-        if(tree_node.right){ queue.push(tree_node.right) } 
+        if (tree_node.left){ queue.push(tree_node.left);console.log("avl_tree:bfs_traversal push left <" + tree_node.left.name + ">"); } 
+        if(tree_node.right){ queue.push(tree_node.right);console.log("avl_tree:bfs_traversal push right <" + tree_node.right.name + ">"); } 
       }
       return arr 
     } 

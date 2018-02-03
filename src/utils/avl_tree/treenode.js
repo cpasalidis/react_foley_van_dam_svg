@@ -29,6 +29,10 @@ class TreeNode {
        let t = new TreeNode(this.data,this.name);
        return t;
    }
+
+   isLeaf = () => {
+       return ((!this.left) && (!this.right));
+   }
 } //of class TreeNode
 
 export default TreeNode;

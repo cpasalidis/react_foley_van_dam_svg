@@ -176,6 +176,13 @@ eyreshTomwnBruteForce = (mesh) => {
       return aSeg.name + "," +  aSeg.X1() + "," + aSeg.Y1() + "," + aSeg.X2() + "," + aSeg.Y2()
     }
 
+     isLeftOf = ( segment, askPoint) => {
+      return ((segment.X2() - segment.X1())*(askPoint.Y() - segment.Y1()) - (segment.Y2() - segment.Y1())*(askPoint.X() - segment.X1())) > 0;
+  }
+   isRightOf = ( segment, askPoint) => {
+    return ((segment.X2() - segment.X1())*(askPoint.Y() - segment.Y1()) - (segment.Y2() - segment.Y1())*(askPoint.X() - segment.X1())) < 0;
+  }
+
  /** eyresh tomwn ey8ygrammwn tmhmatwn xrhsimopoiwntas arrays gia tis domes dedomenwn Q kai T */
  eyreshTomwnArrays = (mesh,edgesStartingFromVertex) => {
           let methodResult = []; //each result is an array [x,y,U(p),L(p),C(p)]
@@ -276,12 +283,6 @@ eyreshTomwnBruteForce = (mesh) => {
               //einai apo8hkeymeno eite se ayto to fyllo eite se ekeino poy brisketai amesws sta aristera toy. Me paromoio tropo mporoyme na broyme kai to tmhma poy
               //brisketai akribws sta de3ia toy p h ta tmhmata poy periexoyn to p.
               console.log("bhma8 U(p) U C(p) <" + UpUnionCp.length + "> L(p) " + lp.length);
-              let isLeftOf = ( segment, askPoint) => {
-                return ((segment.X2() - segment.X1())*(askPoint.Y() - segment.Y1()) - (segment.Y2() - segment.Y1())*(askPoint.X() - segment.X1())) > 0;
-            }
-            let isRightOf = ( segment, askPoint) => {
-              return ((segment.X2() - segment.X1())*(askPoint.Y() - segment.Y1()) - (segment.Y2() - segment.Y1())*(askPoint.X() - segment.X1())) < 0;
-            }
               tSegments = getDataStructure(setT);
               printNames("bhma 9:",tSegments);              
               if (UpUnionCp.length === 0) {
@@ -289,10 +290,10 @@ eyreshTomwnBruteForce = (mesh) => {
                 let ln = -1,rn=-1;
                 if (lp.length > 0) {
                   for (let kk = 0; kk < tSegments.length; kk++) {
-                    if (isLeftOf(tSegments[kk],p)) {
+                    if (this.isLeftOf(tSegments[kk],p)) {
                       if (ln< 0) { ln = kk; } else { ln=Math.max(ln,kk); };
                     }
-                    if (isRightOf(tSegments[kk],p)) {
+                    if (this.isRightOf(tSegments[kk],p)) {
                       if (rn < 0) { rn = kk;} else {rn=Math.min(ln,kk);}
                     }
                   }
@@ -375,31 +376,72 @@ eyreshTomwnBruteForce = (mesh) => {
 
   eyreshTomwnAVLTree = (mesh,edgesStartingFromVertex) => {
     let methodResult = []; //array of elements its element is [x,y,U(p),L(p),C(p)]
+    //
+    let printNames = (aName,anIterableStruct,isPrintingContainingNodes) => { 
+      let bfs = anIterableStruct.inOrderTraversalNew();
+      let res = ""+ aName + " <<<";
+      let item = bfs.shift();
+      let count = 0;
+      while (item) {
+        if (isPrintingContainingNodes || item.isLeaf()) {
+          res += item + ","              
+        }
+        item = bfs.shift();
+      }
+      res += ">>>";
+      console.log(res);
+    }
+    let pointToString = (aPoint) => {
+      return aPoint.name + "," + aPoint.X() + "," + aPoint.Y();
+    }
+    let printNamesOfArray = (aName,anArray) => { 
+      let res = ""+ aName + " <<<";
+      for (let item of anArray) {
+        res += item.name + ","              
+      }
+      res += ">>>";
+      console.log(res);
+    }
+
     //this is the right structure for points...i just want to test the other btree/let btree = new AVLTree(); 
     let btreeQ = new AVLTree();
     let btreeT = new AVLTreeAlwaysLeafs(); 
+    //
+    let meshEdges = mesh.edges;
+    let meshVertices = mesh.vertices;        
     //avltreeTests(mesh,btreeQ,btreeT)
-    mesh.vertices.map((vertex,index) => {
-      let tn = new Point2DTreeNode(vertex.X(),vertex.Y(),true,edgesStartingFromVertex[index],"point"+index);
+    meshVertices.map((vertex,index) => {
+      let tn = new Point2DTreeNode(vertex.X(),vertex.Y(),false,edgesStartingFromVertex[index],"point"+(index+1));
       btreeQ.insertNew(tn);
       //btree.printTree(true) ;
       //console.log("======> <===========");
       return tn;
     })
+
+    printNames("eyreshTomwnAVLTree: initial Q",btreeQ,true);
+    //just a test of the sorting of segments
+    
+    let testTreeT = new AVLTreeAlwaysLeafs();
+    meshEdges.map((edge,index)  => {
+      let s1 = meshVertices[edge[EDGE_I]], s2 = meshVertices[edge[EDGE_J]];
+      let x1 = s1.X(),y1=s1.Y(),x2=s2.X(),y2=s2.Y();
+      let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,"tSE" +".edge" + (index) );
+      testTreeT.insertNew(segForT);          
+    })
+    printNames("eyreshTomwnArrays: testSetWithAllEdges",testTreeT,false);
+    
     //console.log("nodes bfs " + JSON.stringify(qnodes));
       //8elw mono thn arxh ka8e tmhmatos kai to mikrotero x paei aristera. An exoyn idio x, to mikrotero y paei aristera
-      let meshEdges = mesh.edges;
-      let meshVertices = mesh.vertices;        
       //THIS SHOULD RUN WHILE btreeq HAS POINTS
-        console.log("balanced tree size <" + btreeQ.size() + "> members <" + btreeQ.printTree(true) + ">");
-        let qnodes = btreeQ.bfs_traversal();    
-      for (let Qi = 0; Qi < qnodes.length;Qi++) {
-        //bhma1. eyresh U(p)
-        let p = qnodes[Qi];
+        let qnodes = btreeQ.inOrderTraversalNew();    
+        let p = qnodes.shift();
+        btreeQ.removeNew(p);                   
+      while (p) {
+        //bhma1. eyresh U(p)        
         let pIndex = p.name.substring("point".length);
         console.log('got pindex ' + pIndex);
-        let pSegments = p.getUserData();
-        console.log("For point <" + Qi + "> i have <" + pSegments.length + "> line segments");
+        let pSegments = p.getUserData();        
+        console.log(" ====> For point <" + pointToString(p) + "> i have <" + pSegments.length + "> line segments");
         let up=[]; //segments starting with p
         if (pSegments.length > 0) {
           for (let pSegi = 0; pSegi < pSegments.length;pSegi++)  {
@@ -407,16 +449,16 @@ eyreshTomwnBruteForce = (mesh) => {
             let s1 = meshVertices[aSegment[EDGE_I]];
             let s2 = meshVertices[aSegment[EDGE_J]];
             let x1 = s1.X(),y1=s1.Y(),x2=s2.X(),y2=s2.Y();
-            console.log(" vertex1 is <" +JSON.stringify(s1) + "> with vertex2 is <" + JSON.stringify(s2) + "> coordinates are <" + x1 + "," + y1 + " - " + x2 + "," + y2);
-            let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,p.name +".seg" + pSegi) ;
+            //console.log(" vertex1 is <" +pointToString(s1) + "> with vertex2 is <" + pointToString(s2) + "> coordinates are <" + x1 + "," + y1 + " - " + x2 + "," + y2 +">");
+            let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,p.name +".edge" + pSegments[pSegi]) ;
             up.push(segForT);
-            console.log("Adding to T element <" +JSON.stringify(segForT) + ">");
+            console.log("Adding to T element <" +this.segmentToString(segForT) + ">");
             btreeT.insertNew(segForT);
           }
-          console.log("balanced tree named T size <" + btreeT.size() + "> members <" + btreeT.printTree(true) + ">");
+          printNames("bhma1 T <",btreeT,false);          
         }
         //bhma2. briskoyme anamesa sta tmhmata poy einai apo8hkeymena sthn T ekeina poy periexoyn to p
-        let px = meshVertices[pIndex].X(),py = meshVertices[pIndex].Y();
+        let px = p.X(),py = p.Y();
         let lp=[],cp=[];
         let tSegments = btreeT.leafsInOrderNew(false);
         for (let tSegi = 0; tSegi < tSegments.length; tSegi++) {
@@ -431,9 +473,11 @@ eyreshTomwnBruteForce = (mesh) => {
         let allTogether = lp.concat(cp).concat(up);          
         //i could not make Set() work so i used this trick from https://stackoverflow.com/questions/1960473/get-all-unique-values-in-an-array-remove-duplicates
         let union = allTogether.filter((value,index,self) => { return self.indexOf(value)  === index});
-        console.log(" L(p) is <" + JSON.stringify(lp) + "> C(p) is <" + JSON.stringify(cp) + "> U(p) is <" + JSON.stringify(up) + "> alltoghether <" + JSON.stringify(allTogether)  + "> union is <" + JSON.stringify(union) + ">");
+        printNamesOfArray("U(p) is ",up);
+        printNamesOfArray("L(p) is ",lp);
+        printNamesOfArray("C(p) is ",cp);
         //bhma 4: Anaferoyme to p ws shmeio tomhs ka8ws kai ta L(p),U(p) kai C(p)
-        if (union.size > 1) {
+        if (union.length> 1) {
           console.log ("SUCCESS !!! point <" + p.name + "> is an intersection point");
           let anIntersectionPoint = [p.X(),p.Y(),up,lp,cp];
           methodResult.push(anIntersectionPoint);
@@ -441,13 +485,15 @@ eyreshTomwnBruteForce = (mesh) => {
         //bhma 5: Diagrafoyme apo thn T ta tmhmata toy L(p) u C(p)
         let lpUnionCp = lp.concat(up);
         for (let iUnionIdx = 0; iUnionIdx < lpUnionCp.length; iUnionIdx++) {
+          console.log("bhma5: removing from T <" +lpUnionCp[iUnionIdx]  + ">");
           btreeT.removeByName(lpUnionCp[iUnionIdx]);
         }
         //bhma 6: Eisagoyme sthn T ta tmhmata toy U(p) u C(p)
         let UpUnionCp = up.concat(cp);
         for (let iUpUnionCp = 0;iUpUnionCp < UpUnionCp.length; iUpUnionCp++) {
+          console.log("bhma6: ready to re-insert <" +UpUnionCp[iUpUnionCp] + ">" );
           //if T does not contain an item, i add it
-          if (btreeT.getLeafByName(UpUnionCp[iUpUnionCp]).length === 0) {
+          if (btreeT.getLeaf(UpUnionCp[iUpUnionCp]).length === 0) {
             console.log("As part of step 7 i insert element <" + UpUnionCp[iUpUnionCp].name + ">");
             btreeT.insertNew(UpUnionCp[iUpUnionCp]);
           }
@@ -458,20 +504,27 @@ eyreshTomwnBruteForce = (mesh) => {
         let ln = -1,rn=-1;
         if (lp.length > 0) {
           for (let kk = 0; kk < tSegments.length; kk++) {
-            if (tSegments[kk].compareTo(lp[0]) === 0) {
-              ln=kk-1;
-              rn=kk+1;
-              break;
+            if (this.isLeftOf(tSegments[kk],p)) {
+              if (ln< 0) { ln = kk; } else { ln=Math.max(ln,kk); };
+            }
+            if (this.isRightOf(tSegments[kk],p)) {
+              if (rn < 0) { rn = kk;} else {rn=Math.min(ln,kk);}
             }
           }
           if (ln < 0) { ln = -1;}
           if (rn > tSegments.length) { rn = -1;}
-          if (ln > 0 ) { console.log("left neighbor is <" + tSegments[ln].name)}
-          if (rn > 0 && rn < tSegments.length) { console.log("right neighbor is <" + tSegments[rn].name)}
+          if (ln > 0 ) { console.log("bhma9: left neighbor is <" + tSegments[ln])}
+          if (rn > 0 && rn < tSegments.length) { console.log("bhma9: right neighbor is <" + tSegments[rn])}
           if ((ln > 0) && (rn > 0 && rn<tSegments.length)) {
             let sl = tSegments[ln];
             let sr = tSegments[rn];
-            let newPoint = this.eyreshNeoySymbantos(sl,sr,p);
+            console.log("bhma9: sl is  <" +sl  + "> sr is <" + sr + ">");
+            let newpoint = this.eyreshNeoySymbantos(sl,sr,p);
+            if (newpoint.length > 0) { 
+              let newpTn = new Point2DTreeNode(newpoint[0][0],newpoint[0][1],false,[],"intersectionpoint."+ln+"_" + rn);  
+              console.log("eyreshTomwnAVLTree:bhma9: bazw sthn Q to <"+newpTn+">")
+              btreeQ.add(newpTn);
+            }
           }
         }
       }
@@ -484,12 +537,8 @@ eyreshTomwnBruteForce = (mesh) => {
           
         for (let kkk = 0; kkk < tSegments.length; kkk++) {
           if (tSegments[kkk].compareTo(UpUnionCp[uiup]) === 0) {
-          if (kkk < stonosIdx) {
-            stonosIdx = kkk;
-          }
-          if (kkk > sDystonosIdx) {
-            sDystonosIdx = kkk;
-          }
+            if (stonosIdx< 0) { stonosIdx = kkk;} else {stonosIdx = Math.min(kkk,stonosIdx);}
+            if (sDystonosIdx < 0) { sDystonosIdx = kkk;}  else {sDystonosIdx = Math.max(kkk,sDystonosIdx);}
           } //if found segment in leafs
         }  //for all segments known
         } //for all elements of U(p) u C(p)
@@ -499,17 +548,37 @@ eyreshTomwnBruteForce = (mesh) => {
           //bhma 12: estw sl o aristeros geitonas toy sTonos sthn T
           if (stonosIdx > 1) {              
             let sl = tSegments[stonosIdx-1]
-            this.eyreshNeoySymbantos(sl,sTonos,p);
+            let newpoint = this.eyreshNeoySymbantos(sl,sTonos,p);
+            if (newpoint.length > 0) { 
+              let newpTn = new Point2DTreeNode(newpoint[0][0],newpoint[0][1],false,[],"intersectionpoint."+(stonosIdx-1)+"_" + stonosIdx);  
+              console.log("evreshTomwnAVLTree:bhma12: bazw sthn Q to <"+newpTn+">")
+              btreeQ.insertNew(newpTn);
+            }
           }
         }
         //bhma 15:
         if (sDystonosIdx > -1 && sDystonosIdx < (tSegments.length-1)) {
           let sDystonos = tSegments[sDystonosIdx];
           let sr = tSegments[sDystonosIdx+1];
-          this.eyreshNeoySymbantos(sDystonos,sr,p);
+          console.log("bhma15: sDystonos is  <" +sDystonos  + "> sr is <" + sr + ">");
+         let newpoint =  this.eyreshNeoySymbantos(sDystonos,sr,p);
+         if (newpoint.length > 0) { 
+          let newpTn = new Point2DTreeNode(newpoint[0][0],newpoint[0][1],false,[],"intersectionpoint."+(stonosIdx-1)+"_" + stonosIdx);  
+          console.log("evreshTomwnAVLTree:bhma15: bazw sthn Q to <"+pointToString(newpTn)+">")
+          btreeQ.insertNew(newpTn);
+        }
         }
       }
+      /******************/      
+      printNames("=-=-=-=-=> after processing point <" + p.name + ">",btreeQ,true);
+       qnodes = btreeQ.inOrderTraversalNew();   
+       //printNamesOfArray("EEEEEEEEEEEEe=> ",qnodes);
+       p = qnodes.shift();
+       btreeQ.removeNew(p);
+       if (p) { printNames("=-=-=-=-=> =-=-=-=-=> after removing point <" + p.name + ">",btreeQ);}
       } //of for in Qi
+
+      return methodResult;
     } //of evreshTomwnAVLTree method
 
   makemesh = () => {      
@@ -546,10 +615,10 @@ eyreshTomwnBruteForce = (mesh) => {
           edgesStartingFromVertex[epn(10)]=[];
           //mesh.printInfo();
           let intersections = [];
-          //this.eyreshTomwnAVLTree(mesh,edgesStartingFromVertex);
+          intersections = this.eyreshTomwnAVLTree(mesh,edgesStartingFromVertex);
           //this.eyreshNeoySymbantosHc();
-          intersections = this.eyreshTomwnArrays(mesh,edgesStartingFromVertex);          
-          //let intersections  = this.eyreshTomwnBruteForce(mesh);          
+          //intersections = this.eyreshTomwnArrays(mesh,edgesStartingFromVertex);          
+          //intersections  = this.eyreshTomwnBruteForce(mesh);          
           console.log("=======================>");
           for (let inter of intersections) {
             console.log("Point " + inter[0] + "::" + inter[1] + " is intersection !!!! U(p) = " + inter[2] + " L(p) = " + inter[3] + "C(p) = " + [inter[4]]);
@@ -567,6 +636,9 @@ eyreshTomwnBruteForce = (mesh) => {
                   return (  <text key={index} x={vertex.X()} y={vertex.Y()} stroke="black" strokeWidth="1" fill="white">{index+1}</text>);                      
                 })
               }
+            
+              <text key="100" x="185"y="70" stroke="black" strokeWidth="1" fill="white">I</text>
+            
               {
                 mesh.edges.map((edge,index) => {
                   const startpoint = mesh.vertices[edge[EDGE_I]];

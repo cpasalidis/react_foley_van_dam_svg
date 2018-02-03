@@ -10,9 +10,9 @@ class AVLTreeAlwaysLeafs {
   } 
 
   insertNew = (node) =>{
-    console.log("On insert new of always leafs tree <" + node.name + ">");
+    //console.log("On insert new of always leafs tree <" + node.name + ">");
     if (! this.root){ 
-      console.log("insert at root of tree ");    
+      //console.log("insert at root of tree ");    
     } 
     this.root = this.insert(this.root,node);
     return;
@@ -22,7 +22,7 @@ class AVLTreeAlwaysLeafs {
   insert = (parent,node) =>{
     let nodeName = node ? node.name: '';
     let parentName = parent ? parent.name : '';
-   console.log("On insert of always leafs tree <" + nodeName + "> root of subtree is <" + parentName + ">");  
+   //console.log("On insert of always leafs tree <" + nodeName + "> root of subtree is <" + parentName + ">");  
     if (! parent) {
       this.total_nodes += 1 ;     
       //console.log("method returns <" + nodeName + ">");
@@ -36,27 +36,29 @@ class AVLTreeAlwaysLeafs {
     }
     //so if code reaches here, either left and right subtrees exist or none of them exists
 
-    if (parent.compareTo(node) < 0){ 
+    if (node.compareTo(parent) < 0){ 
+      //console.log("avltreealwaysleafs: i will insert <" + node.toString() + "> to the left of <" + parent.toString() + ">");
        parent.left = this.insert(parent.left, node);
        if (parent.left && (! parent.right)) {
          //after insert
-         console.log("after insert i have " + parent.left.name + " to the left of " + parent.name);
+         //console.log("after insert i have " + parent.left.toString() + " to the left of " + parent.toString());
          let copyLeft = parent.left.copy();
          copyLeft.left = parent.left;
          copyLeft.right = parent;
          parent.left = null;
          parent = copyLeft;
        }
-    } else if (parent.compareTo(node) > 0){
+    } else if (node.compareTo(parent) > 0){
+      //console.log("avltreealwaysleafs: i will insert <" + node.toString() + "> to the right of <" + parent.toString() + ">");
        parent.right = this.insert(parent.right, node);
-       console.log("after insert i have " + parent.right.name + " to the right of " + parent.name);
+       //console.log("after insert i have " + parent.right.toString() + " to the right of " + parent.toString());
        if ((! parent.left) && parent.right) {
         //after insert
         let copyLeft = parent.copy();
         parent.left = copyLeft;        
       }
     } else {
-      console.log (" !!!! STRANGE " + parentName + " compare To " + nodeName + " returns " + parent.compareTo(node));
+      console.log (" !!!! STRANGE " + parentName + " compare To " + nodeName + " returns " + parent.compareTo(node) + " Assuming someone tries to enter an existing element and ignoring new one");
     } 
 
     /*
@@ -288,6 +290,26 @@ class AVLTreeAlwaysLeafs {
       return this.LefttmostNodeOf(parentNotNull.left);
     }
 
+    inOrderTraversalNew = () =>{
+      let result = [];
+      if (! this.root) { return result; }
+      return result.concat(this.inOrderTraversal(this.root));
+    }
+  
+    
+    inOrderTraversal = (treeRoot) =>{
+      let result = [];
+      if (treeRoot.left) {
+        result =  result.concat(this.inOrderTraversal(treeRoot.left));
+      }
+      result = result.concat([treeRoot]);
+      if (treeRoot.right) {
+        result = result.concat(this.inOrderTraversal(treeRoot.right));
+      }
+      return result;
+     //return treeRoot ? this.leafsInOrder(treeRoot.left).concat([treeRoot.name]).concat(this.leafsInOrder(treeRoot.right)) : []
+     }
+  
 
     bfs_traversal = () => {
       if (this.root === null) {
@@ -303,19 +325,21 @@ class AVLTreeAlwaysLeafs {
       return arr 
     } 
     
-    getLeafByName = (nodeName) => {
+    getLeaf = (node) => {
+      //console.log("avltreealwaysleafs: getLeaf <" + node + "> ...");
       if (this.root === null) {
         return [];
       }
-      let queue = [this.root], arr = []
+      let queue = [this.root], arr = [];
       while (queue.length > 0){
         let aTreeNode = queue.shift();
-        if ((!aTreeNode.left) && (!aTreeNode.right) && (aTreeNode.name === nodeName )) {
+        if (aTreeNode.isLeaf() && (aTreeNode.compareTo(node) === 0)) {
           arr.push(aTreeNode);
         }
         if (aTreeNode.left){ queue.push(aTreeNode.left) } 
         if(aTreeNode.right){ queue.push(aTreeNode.right) } 
       }
+      //console.log("... returns <" + arr + ">");
       return arr 
     }
 } //of class

@@ -15,19 +15,22 @@ class Point2DTreeNode extends TreeNode {
     
     /** we process points top to bottom, left to right */
     compareTo = (anotherNode) => {
+       //console.log("comparing reverse= <" + this._reverse + "> <" + this.name + "> with <" + (anotherNode ? anotherNode.name:'') + ">");        
         let yComparison = this.Y() - anotherNode.Y();
         if (this._reverse) {  yComparison =  anotherNode.Y() - this.Y(); }
+        //console.log("ycomparison is <" + yComparison +">");
         if (yComparison !== 0) {
             return yComparison;
         } else {
-            let xComparison = this.X() - anotherNode.X();
-            if (this._reverse) {  xComparison =  anotherNode.X() - this.X(); }
+            let xComparison = anotherNode.X() - this.X();
+            if (this._reverse) {  xComparison =  this.X() - anotherNode.X(); }
+           //console.log("xcomparison is <" + xComparison +">");
             return xComparison;
         }
       } //of method
  
      toString = () => {
-        return ""+this.data + "~" + this.userData;
+        return ""+this.name + "=" + this.data + "~" + this.userData;
     }
 
     copy = () => {
@@ -38,6 +41,7 @@ class Point2DTreeNode extends TreeNode {
     getUserData = () => {
         return this.userData;
     }
+
 };
 
 export default Point2DTreeNode;

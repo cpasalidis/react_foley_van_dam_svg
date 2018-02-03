@@ -41,20 +41,23 @@ class TreeNodeWithLineSegment extends TreeNode {
        }
        */
       //assume a segment if left of another when start of segment is left of start of the other
+      //console.log("comparing  <" + this.name + "> with <" + other.name + ">");        
       let x1 = this.X1();
        let otherx1 = other.X1();
-       let comp = otherx1 - x1;
+       let comp = x1 -otherx1;
+       //console.log("comp  x1 is <" + comp +">");
        if (comp === 0) {
         let x2 = this.X2();
         let otherx2 = other.X2();
-        comp = otherx2 - x2; 
+        comp = x2 - otherx2; 
+        //console.log("comp  x2 is <" + comp +">");
        }
 
        return comp;
     }
 
     toString = () => {
-        return "TreeNodeWithLineSegment " + this.name;
+        return "TreeNodeWithLineSegment: " + this.name + " " + this.X1() + " " + this.Y1() + "," + this.X2() + " " + this.Y2() ;
     }
 
     value = () => { 
