@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import Mesh1D from '../utils/Mesh1D';
-import BalancedBinaryTree from '../utils/BalancedBinaryTree';
-import TreeNode from '../utils/avl_tree';
 
 class MySimpleBoundingPolygon extends Component {
     constructor() {
