@@ -4,7 +4,7 @@ import { Grid, Navbar, Nav,NavItem,NavDropdown,MenuItem,Jumbotron, Button } from
 //import {MySimpleStaticClock,MySimpleCube,MySimple1DMesh} from './components';
 //import {MySimpleStraightPaths} from './components';
 //import {MySimpleBoundingPolygon} from './components';
-import {MySimple2blyLinkedEdgeList} from './components';
+import {MySimple2blyLinkedEdgeListDemo} from './components';
 //https://stackoverflow.com/questions/23402542/embedding-svg-into-reactjs
 
 class App extends Component {
@@ -57,7 +57,7 @@ class App extends Component {
             {/* works <MySimple1DMesh/>  */}
             {/*works <MySimpleStraightPaths/>*/}
             {/* works <MySimpleBoundingPolygon/> */}
-            <MySimple2blyLinkedEdgeList/>
+            <MySimple2blyLinkedEdgeListDemo/>
           </Grid>
         </Jumbotron>
       </div>
