@@ -46,7 +46,9 @@ class DdFace  {
 
     getName = () => { return this.name; }
     addBoundingEdge = (edge) => { this.boundEdge = edge;}
+    getBoundingEdge = () => { return this.boundEdge;}
     addHoleEdge = (he) => {this.holeEdges.push(he); }
+    getHoleEdges = () => { return this.holeEdges; }
     toString = () => { 
         let heNames = "";
         for (let he of this.holeEdges) {
