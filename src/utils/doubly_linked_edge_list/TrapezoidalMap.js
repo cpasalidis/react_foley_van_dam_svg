@@ -4,15 +4,13 @@
 // (no need to take arcsine all we will care about is whether sign turns out positive or negative)
 
 class TzEdge {
-    constructor(name,x1,y1,x2,y2) {
+    constructor(name,sName,eName) {
         this.name = name;
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
+        this.sName = sName;
+        this.eName = eName;
     }
 
-    toString = () => { return "TzEdge: " + this.name + " : " + this.x1 + "," + this.y1 + ":" + this.x2 + "," + this.y2;}
+    toString = () => { return "TzEdge: " + this.name + " : " + this.sName + "," + this.eName;}
 } //of class
 
 

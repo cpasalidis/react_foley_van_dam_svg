@@ -32,6 +32,12 @@ class MySimpleTrapezoidalMap extends Component {
      makemesh = () => {
       //
       let tzmap = new TrapezoidalMap('');
+      tzmap.setVertex("p1",125,90);
+      tzmap.setVertex("q1",225,50);
+      tzmap.setVertex("p2",150,100);
+      tzmap.setVertex("q2",260,120);
+      tzmap.setSegment("s1","p1","q1");
+      tzmap.setSegment("s2","p2","q2");
       /*
       mesh2.addVertex(50,450,'u1');
       mesh2.addVertex(250,490,'u2');
@@ -69,12 +75,14 @@ class MySimpleTrapezoidalMap extends Component {
           {
             tzmap.verticesArr.map((vertex,index) => {
               //return (  <circle key={index} cx={vertex.X()} cy={vertex.Y()} r="2" stroke="black" strokeWidth="1" fill="white"/>);                      
-              return (  <text key={index} x={vertex.x} y={vertex.y} stroke="blue" strokeWidth="1" fill="white">{vertex.getName()}</text>);
+              return (  <text key={index} x={vertex.x} y={vertex.y} stroke="blue" strokeWidth="1" fill="white">{vertex.name}</text>);
             })
           }
           {
             tzmap.edgesArr.map((edge,index) => {
-              return (  <line key={index} x1={edge.x1} y1={edge.y1} x2={edge.x2} y2={edge.y2} style={{stroke:'blue',strokeWidth:1}}/>);                      
+              let st = tzmap.vertices.get(edge.sName);
+              let ed = tzmap.vertices.get(edge.eName);
+              return (  <line key={index} x1={st.x} y1={st.y} x2={ed.x} y2={ed.y} style={{stroke:'blue',strokeWidth:1}}/>);                      
             })          
           }
           </svg>
