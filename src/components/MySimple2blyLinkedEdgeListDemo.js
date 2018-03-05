@@ -78,6 +78,36 @@ class MySimple2blyLinkedEdgeListDemo extends Component {
       console.log("=========================================================");
       let ovl = new MapOverlay(mesh,mesh2).combineMaps();
       ovl.printInfo();
+      let intersections = ovl.eyreshTomwnAVLTree();
+      let  interestingIntersections = new Set();
+      console.log("=======================>");
+      for (let inter of intersections) {
+        //console.log("Point " + inter[0] + "::" + inter[1] + " is intersection !!!! U(p) = " + inter[2] + " L(p) = " + inter[3] + "C(p) = " + [inter[4]]);
+        let segments = inter[2].concat(inter[3]).concat(inter[4]);
+        let ep = '';
+        for (let tn of segments) {
+          let nameStart = tn.name.lastIndexOf("edgeDdEdge: ")+"edgeDdEdge: ".length;
+          let nameEnd = tn.name.lastIndexOf(" s: ");
+          let edgePrefix = tn.name.substring(nameStart,nameEnd).replace(/\d.*/,'');
+          if (ep.length === 0) { ep = edgePrefix;}
+          if (ep !== edgePrefix) {
+            let isThere = false;
+            for (let iis of interestingIntersections) {
+              if (iis[0] === inter[0] || iis[1] === inter[1] ) {
+                isThere = true;
+              }
+            }
+            if (! isThere) {
+              interestingIntersections.add(inter);
+            }
+            break;
+          }
+        }
+      }
+      console.log("<=======================");
+      for (let iint of interestingIntersections) {
+        console.log("Interesting intersection : " + iint);
+      }
 
 
        //const XC = 0; //index of x coordinate in mesh table

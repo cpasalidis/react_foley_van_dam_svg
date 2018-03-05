@@ -133,7 +133,8 @@ class MeshDoublyLinkedListEdges {
 
     getEdgesStartingOf = (vertexName) =>  {
         let ret = [];
-        for (let e in this.edges.values()) {
+
+        for (let e of this.getEdges()) {
             if (e.getStart().getName() === vertexName) {
                 ret.push(e);
             }
@@ -162,7 +163,8 @@ class MeshDoublyLinkedListEdges {
     }
 
      getEdges = ()  => {
-        return Object.values(this.edges);
+         let ret = Object.values(this.edges);
+        return ret;
     }
 
     getFaces = () => {

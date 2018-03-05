@@ -69,7 +69,97 @@ class MapOverlay {
         this.D.printInfo();
     }
 
-    eyreshTomwnAVLTree = (mesh,edgesStartingFromVertex) => {
+     segmentToString = (aSeg) =>  {
+       return aSeg.toString();
+      //return aSeg.name + "," +  aSeg.getStart().X() + "," + aSeg.getStart().Y() + "," + aSeg.getTwin().getStart().X() + "," + aSeg.getTwin().getStart().Y();
+    }
+
+/** given line segments sl,sr and a point p, returns the intersection point of sl,sr below p. If does not exist such intersection point returns null */
+        //eyreshNeoySymbantosHc = () => {
+          eyreshNeoySymbantosHc = (s1p1x,s1p1y,s1p2x,s1p2y,s2p1x,s2p1y,s2p2x,s2p2y) => {
+            //https://www.geeksforgeeks.org/program-for-point-of-intersection-of-two-lines/
+            //determine intersection of sl,sr
+            
+            //let s1p1x=150,s1p1y=220,s1p2x=200,s1p2y=10;
+            //let s2p1x=150,s2p1y=7,s2p2x=225,s2p2y=140;
+  
+            ////let s1p1x=1,s1p1y=1,s1p2x=4,s1p2y=4;
+            ////let s2p1x=1,s2p1y=8,s2p2x=2,s2p2y=4;
+  
+            ////let s1p1x=1,s1p1y=1,s1p2x=4,s1p2y=4;
+            ////let s2p1x=2,s2p1y=0,s2p2x=2,s2p2y=5;
+  
+  
+            //console.log("eyreshNeoySymbantos <" + segl + "::" + segr + ">");
+               // Line AB represented as a1x + b1y = c1
+               //ok/console.log("-----> " + s1p1x + "," + s1p1y + "," + s1p2x + "," + s1p2y);
+               let a1 = s1p2y - s1p1y;
+               let b1 = s1p1x -s1p2x;
+               let  c1 = a1*(s1p1x) + b1*(s1p1y);
+              //ok/console.log("eyreshNeoySymbantosHc line1 is <" + a1 + "x" + " + " + b1 + "y = " + c1 );
+               // Line CD represented as a2x + b2y = c2
+               //ok/console.log("----->> " + s2p1x + "," + s2p1y + "," + s2p2x + "," + s2p2y);
+               let a2 = s2p2y - s2p1y;
+               let b2 = s2p1x - s2p2x;
+               let  c2 = a2*(s2p1x) + b2*(s2p1y);
+               //ok/console.log("eyreshNeoySymbantosHc line2 is <" + a2 + "x" + " + " + b2 + "y = " + c2 );
+      
+               let  determinant = a1*b2 - a2*b1;
+              if (determinant === 0) {
+                //lines are parallel
+                //ok/console.log("eyreshNeoySymbantosHc : parallel lines");
+              } 
+            
+              if (determinant !== 0) {
+                let xd =(b2*c1 - b1*c2)/determinant;
+                let yd = (a1*c2 - a2*c1)/determinant;
+                let x = parseInt(xd,10);
+                let y = parseInt(yd,10);
+                //ok/console.log("eyreshNeoySymbantosHc : determinant is " + determinant + " " + xd + " " + yd + " x and y are <" + x + "::" + y + ">");
+                //ok we got the point, check if is inside the segments
+                
+                let xInsideSl = (Math.min(s1p1x,s1p2x) <= x) && (x <= Math.max(s1p1x,s1p2x));
+                let yInsideSl = (Math.min(s1p1y,s1p2y) <= y) && (y <= Math.max(s1p1y,s1p2y));
+                //...
+                let xInsideSr = (Math.min(s2p1x,s2p2x) <= x) && (x <= Math.max(s2p1x,s2p2x));
+                let yInsideSr = (Math.min(s2p1y,s2p2y) <= y) && (y <= Math.max(s2p1y,s2p2y));
+                //ok/console.log(" " + Math.min(s1p1x,s1p2x) + " " + x + " " + Math.max(s1p1x,s1p2x) + " " + Math.min(s2p1x,s2p2x) + " " + x + " " + Math.max(s2p1x,s2p2x) );              
+                //ok/console.log(" " + Math.min(s1p1y,s1p2y) + " " + y + " " + Math.max(s1p1y,s1p2y) + " " + Math.min(s2p1y,s2p2y) + " " + y + " " + Math.max(s2p1y,s2p2y) );              
+                //ok/console.log("eyreshNeoySymbantosHc: minmax <" + xInsideSl + " " + yInsideSr + " " + xInsideSr + " " + yInsideSr);
+                //if its inside the segments, check if its below p
+                if (xInsideSl && yInsideSl && xInsideSr && yInsideSr ) {
+                  //ok/console.log("eyreshNeoySymbantosHc: Found intersectionPoint <" + x + "::" + y + ">");
+                  return [x,y];
+                }
+              } //of determinant != 0
+              return [];
+          } //of eyreshNeoySymbantos method
+
+    /** given line segments sl,sr and a point p, returns the intersection point of sl,sr below p. If does not exist such intersection point returns null */
+    eyreshNeoySymbantos = (segl,segr,pRef) => {
+      //https://www.geeksforgeeks.org/program-for-point-of-intersection-of-two-lines/
+      //determine intersection of sl,sr
+      console.log("eyreshNeoySymbantos <" + this.segmentToString(segl) + "::" + this.segmentToString(segr) + ">");
+      let res=[];
+       //
+        let s1p1x =segl.X1() ,s1p1y =segl.Y1(),s1p2x = segl.X2(),s1p2y =segl.Y2();
+        let s2p1x = segr.X1(), s2p1y = segr.Y1(), s2p2x =segr.X2(), s2p2y =segr.Y2();
+        let intersectionPoint = this.eyreshNeoySymbantosHc(s1p1x,s1p1y,s1p2x,s1p2y,s2p1x,s2p1y,s2p2x,s2p2y);
+        if (intersectionPoint.length > 0) {
+          let x = intersectionPoint[0];
+          let y = intersectionPoint[1];
+          console.log("...point <"  + x  + "::" + y  + "> is intersection of edges <" + segl + " and " +segr+ ">");
+          segl.setContaining(x,y);
+          segr.setContaining(x,y);
+          res.push([x,y,segl.name,segr.name]);
+        } else {
+          console.log("... not found");
+        }
+        return res;   
+    } //of eyreshNeoySymbantos method
+
+
+    eyreshTomwnAVLTree = () => {
         const XC = 0; //index of x coordinate in mesh table
        const YC = 1; //index of y coordinate in mesh table
        const EDGE_I = 0; //index of first vertex of edge 
@@ -102,16 +192,28 @@ class MapOverlay {
           res += ">>>";
           console.log(res);
         }
+
+        let isAlreadySuccessPoint = (p) => {
+          let ret = false;
+            for (let aPoint of methodResult) {
+              if (aPoint[0] === p.X() && aPoint[1] === p.Y()) {
+                console.log("Point <" + p.X() + "," + p.Y() + " is already found to be a success point");
+                ret = true;
+                break;
+              }
+            }
+            return ret;
+        }
     
         //this is the right structure for points...i just want to test the other btree/let btree = new AVLTree(); 
         let btreeQ = new AVLTree();
         let btreeT = new AVLTreeAlwaysLeafs(); 
         //
-        let meshEdges = mesh.getEdges();
-        let meshVertices = mesh.getVertices();        
+        let meshEdges = this.D.getEdges();
+        let meshVertices = this.D.getVertices();        
         //avltreeTests(mesh,btreeQ,btreeT)
         meshVertices.map((vertex,index) => {
-          let tn = new Point2DTreeNode(vertex.X(),vertex.Y(),false,edgesStartingFromVertex[index],"point"+(index+1));
+          let tn = new Point2DTreeNode(vertex.X(),vertex.Y(),false,this.D.getEdgesStartingOf(vertex.getName()),"point"+(index+1));
           btreeQ.insertNew(tn);
           //btree.printTree(true) ;
           //console.log("======> <===========");
@@ -123,13 +225,13 @@ class MapOverlay {
         
         let testTreeT = new AVLTreeAlwaysLeafs();
         meshEdges.map((edge,index)  => {
-          let s1 = meshVertices[edge[EDGE_I]], s2 = meshVertices[edge[EDGE_J]];
+          let s1 = edge.getStart(), s2 = edge.getTwin().getStart();
           let x1 = s1.X(),y1=s1.Y(),x2=s2.X(),y2=s2.Y();
           let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,"tSE" +".edge" + (index) );
           testTreeT.insertNew(segForT);          
         })
         printNames("eyreshTomwnArrays: testSetWithAllEdges",testTreeT,false);
-        
+
         //console.log("nodes bfs " + JSON.stringify(qnodes));
           //8elw mono thn arxh ka8e tmhmatos kai to mikrotero x paei aristera. An exoyn idio x, to mikrotero y paei aristera
           //THIS SHOULD RUN WHILE btreeq HAS POINTS
@@ -137,6 +239,7 @@ class MapOverlay {
             let p = qnodes.shift();
             btreeQ.removeNew(p);                   
           while (p) {
+            console.log("////////////////////////////////////////// Processing from Q element <" + p + ">");
             //bhma1. eyresh U(p)        
             let pIndex = p.name.substring("point".length);
             console.log('got pindex ' + pIndex);
@@ -145,9 +248,9 @@ class MapOverlay {
             let up=[]; //segments starting with p
             if (pSegments.length > 0) {
               for (let pSegi = 0; pSegi < pSegments.length;pSegi++)  {
-                let aSegment = meshEdges[pSegments[pSegi]];
-                let s1 = meshVertices[aSegment[EDGE_I]];
-                let s2 = meshVertices[aSegment[EDGE_J]];
+                let aSegment = pSegments[pSegi];
+                let s1 = aSegment.getStart();
+                let s2 = aSegment.getTwin().getStart();
                 let x1 = s1.X(),y1=s1.Y(),x2=s2.X(),y2=s2.Y();
                 //console.log(" vertex1 is <" +pointToString(s1) + "> with vertex2 is <" + pointToString(s2) + "> coordinates are <" + x1 + "," + y1 + " - " + x2 + "," + y2 +">");
                 let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,p.name +".edge" + pSegments[pSegi]) ;
@@ -183,7 +286,7 @@ class MapOverlay {
               methodResult.push(anIntersectionPoint);
             }
             //bhma 5: Diagrafoyme apo thn T ta tmhmata toy L(p) u C(p)
-            let lpUnionCp = lp.concat(up);
+            let lpUnionCp = lp.concat(cp);
             for (let iUnionIdx = 0; iUnionIdx < lpUnionCp.length; iUnionIdx++) {
               console.log("bhma5: removing from T <" +lpUnionCp[iUnionIdx]  + ">");
               btreeT.removeByName(lpUnionCp[iUnionIdx]);
@@ -222,8 +325,10 @@ class MapOverlay {
                 let newpoint = this.eyreshNeoySymbantos(sl,sr,p);
                 if (newpoint.length > 0) { 
                   let newpTn = new Point2DTreeNode(newpoint[0][0],newpoint[0][1],false,[],"intersectionpoint."+ln+"_" + rn);  
-                  console.log("eyreshTomwnAVLTree:bhma9: bazw sthn Q to <"+newpTn+">")
-                  btreeQ.add(newpTn);
+                    if (! isAlreadySuccessPoint(newpTn)) {
+                      console.log("eyreshTomwnAVLTree:bhma9: bazw sthn Q to <"+newpTn+">")
+                      btreeQ.add(newpTn);
+                  }
                 }
               }
             }
@@ -264,8 +369,10 @@ class MapOverlay {
              let newpoint =  this.eyreshNeoySymbantos(sDystonos,sr,p);
              if (newpoint.length > 0) { 
               let newpTn = new Point2DTreeNode(newpoint[0][0],newpoint[0][1],false,[],"intersectionpoint."+(stonosIdx-1)+"_" + stonosIdx);  
-              console.log("evreshTomwnAVLTree:bhma15: bazw sthn Q to <"+pointToString(newpTn)+">")
-              btreeQ.insertNew(newpTn);
+              if (! isAlreadySuccessPoint(newpTn)) {
+                console.log("evreshTomwnAVLTree:bhma15: bazw sthn Q to <"+pointToString(newpTn)+">")
+                btreeQ.insertNew(newpTn);
+              }
             }
             }
           }
