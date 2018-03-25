@@ -160,10 +160,10 @@ class MapOverlay {
 
 
     eyreshTomwnAVLTree = () => {
-        const XC = 0; //index of x coordinate in mesh table
-       const YC = 1; //index of y coordinate in mesh table
-       const EDGE_I = 0; //index of first vertex of edge 
-       const EDGE_J = 1; //index of second vertex of edge
+        //const XC = 0; //index of x coordinate in mesh table
+       //const YC = 1; //index of y coordinate in mesh table
+       //const EDGE_I = 0; //index of first vertex of edge 
+       //const EDGE_J = 1; //index of second vertex of edge
         //
         let methodResult = []; //array of elements its element is [x,y,U(p),L(p),C(p)]
         //
@@ -171,7 +171,7 @@ class MapOverlay {
           let bfs = anIterableStruct.inOrderTraversalNew();
           let res = ""+ aName + " <<<";
           let item = bfs.shift();
-          let count = 0;
+          //let count = 0;
           while (item) {
             if (isPrintingContainingNodes || item.isLeaf()) {
               res += item + ","              
@@ -227,8 +227,9 @@ class MapOverlay {
         meshEdges.map((edge,index)  => {
           let s1 = edge.getStart(), s2 = edge.getTwin().getStart();
           let x1 = s1.X(),y1=s1.Y(),x2=s2.X(),y2=s2.Y();
-          let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,"tSE" +".edge" + (index) );
+          let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,"tSE.edge" + (index) );
           testTreeT.insertNew(segForT);          
+          return segForT;
         })
         printNames("eyreshTomwnArrays: testSetWithAllEdges",testTreeT,false);
 

@@ -64,8 +64,8 @@ class MySimpleTrapezoidalMap extends Component {
 
        //const XC = 0; //index of x coordinate in mesh table
       // const YC = 1; //index of y coordinate in mesh table
-       const EDGE_I = 0; //index of first vertex of edge 
-       const EDGE_J = 1; //index of second vertex of edge
+       //const EDGE_I = 0; //index of first vertex of edge 
+       //const EDGE_J = 1; //index of second vertex of edge
         const CANVAS_WIDTH=500;
         const CANVAS_HEIGHT=500;
     

@@ -2,10 +2,10 @@
 //https://stackoverflow.com/questions/1165647/how-to-determine-if-a-list-of-polygon-points-are-in-clockwise-order
 //the cross product (e3wteriko ginomeno) will be used. sin(8eta)=vXw/||v||*||w||
 // (no need to take arcsine all we will care about is whether sign turns out positive or negative)
-const EI=0;
-const EJ=1;
-const XC=0;
-const YC=1;
+//const EI=0;
+//const EJ=1;
+//const XC=0;
+//const YC=1;
 
 
 class DdEdge {
@@ -110,7 +110,7 @@ class MeshDoublyLinkedListEdges {
        // console.log("Adding edge from  <" + i + ' to ' + j+'> Not checking if already exists');                
        let ed = new DdEdge(name,this.vertices[iName])
        this.vertices[iName].addEdge(ed);
-       let twName = twinName ? twinName : name+".twin";
+       //let twName = twinName ? twinName : name+".twin";
        let twed = new DdEdge(twinName,this.vertices[jName]);
        this.vertices[jName].addEdge(twed);
        ed.setTwin(twed);

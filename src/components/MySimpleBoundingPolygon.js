@@ -40,6 +40,7 @@ class MySimpleBoundingPolygon extends Component {
       //bhma1
       mesh.vertices.map((vertex,index) => {
         orderdVertices.add(vertex);
+        return index;
       })
       //bhma 2
       let oq = getDataStructure(orderdVertices);

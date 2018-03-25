@@ -3,8 +3,8 @@ import Mesh1D from '../utils/Mesh1D';
 import {AVLTree,AVLTreeAlwaysLeafs} from '../utils/avl_tree';
 import {Point2DTreeNode,TreeNodeWithLineSegment} from '../utils/avl_tree';
 
-const XC = 0; //index of x coordinate in mesh table
-       const YC = 1; //index of y coordinate in mesh table
+//const XC = 0; //index of x coordinate in mesh table
+  //     const YC = 1; //index of y coordinate in mesh table
        const EDGE_I = 0; //index of first vertex of edge 
        const EDGE_J = 1; //index of second vertex of edge
 
@@ -114,17 +114,17 @@ eyreshTomwnBruteForce = (mesh) => {
   let meshEdges = mesh.edges;
   let meshVertices = mesh.vertices;        
   //
-  let setQ = new Set();
-  let comparisonFunction = (a,b) => { return b.compareTo(a);}
-  let getDataStructure = (aSet) => { return Array.from(aSet).sort(comparisonFunction); }
-  let printNames = (aName,anIterableStruct) => { 
+  //let setQ = new Set();
+  //let comparisonFunction = (a,b) => { return b.compareTo(a);}
+  //let getDataStructure = (aSet) => { return Array.from(aSet).sort(comparisonFunction); }
+  /*let printNames = (aName,anIterableStruct) => { 
     let res = ""+ aName + " <<<";
     for (let item of anIterableStruct) {
       res += item.name + ","              
     }
     res += ">>>";
     console.log(res);
-  }
+  }*/
   for (let i = 0; i < meshEdges.length; i++) {
       let aSegment = meshEdges[i];
       let s1 = meshVertices[aSegment[EDGE_I]], s2 = meshVertices[aSegment[EDGE_J]];
@@ -221,8 +221,9 @@ eyreshTomwnBruteForce = (mesh) => {
           meshEdges.map((edge,index)  => {
             let s1 = meshVertices[edge[EDGE_I]], s2 = meshVertices[edge[EDGE_J]];
             let x1 = s1.X(),y1=s1.Y(),x2=s2.X(),y2=s2.Y();
-            let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,"tSE" +".edge" + (index) );
+            let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,"tSE.edge" + (index) );
             testSetT.add(segForT);          
+            return segForT;
           })
           let testStructureT = getDataStructure(testSetT);
           printNames("eyreshTomwnArrays: testSetWithAllEdges",testStructureT);
@@ -245,7 +246,7 @@ eyreshTomwnBruteForce = (mesh) => {
               setT.add(segForT);
             }
             //bhma2:
-            let pIndex = p.name.substring("point".length)-1;
+            //let pIndex = p.name.substring("point".length)-1;
             let lp=[],cp=[];
               let tSegments =getDataStructure(setT);
               for (let currentSegment of tSegments) {
@@ -381,7 +382,7 @@ eyreshTomwnBruteForce = (mesh) => {
       let bfs = anIterableStruct.inOrderTraversalNew();
       let res = ""+ aName + " <<<";
       let item = bfs.shift();
-      let count = 0;
+      //let count = 0;
       while (item) {
         if (isPrintingContainingNodes || item.isLeaf()) {
           res += item + ","              
@@ -425,8 +426,9 @@ eyreshTomwnBruteForce = (mesh) => {
     meshEdges.map((edge,index)  => {
       let s1 = meshVertices[edge[EDGE_I]], s2 = meshVertices[edge[EDGE_J]];
       let x1 = s1.X(),y1=s1.Y(),x2=s2.X(),y2=s2.Y();
-      let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,"tSE" +".edge" + (index) );
+      let segForT = new TreeNodeWithLineSegment(x1,y1,x2,y2,"tSE.edge" + (index) );
       testTreeT.insertNew(segForT);          
+      return segForT;
     })
     printNames("eyreshTomwnArrays: testSetWithAllEdges",testTreeT,false);
     

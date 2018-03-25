@@ -15,8 +15,8 @@ class AVLTree{
   }
 
   insert = (parent,node) =>{
-    let nodeName = node ? node.name: '';
-    let parentName = parent ? parent.name : '';
+    //let nodeName = node ? node.name: '';
+    //let parentName = parent ? parent.name : '';
     //console.log(" On insert of avl tree <" + node + "> root of subtree is <" + parent + "> <" + (parent ? node.compareTo(parent):-1) + ">");  }
     if (! parent) {
       this.total_nodes += 1 ;     
@@ -107,8 +107,8 @@ class AVLTree{
 
 
   remove(parent, node){
-    let nodeName = node ? node.name : '';
-    let parentName = parent ? parent.name : '';
+    //let nodeName = node ? node.name : '';
+    //let parentName = parent ? parent.name : '';
     //console.log("On remove <" + nodeName + "> root of subtree is <" + parentName + ">");  
     if (!parent) return null;
     if (node.compareTo(parent) === 0){
@@ -121,11 +121,11 @@ class AVLTree{
       parent.right = this.remove(parent.right, temp_node);
     } else if (node.compareTo(parent) < 0){
       parent.left = this.remove(parent.left, node);
-      let childName = parent.left ? parent.left.name : '';
+      //let childName = parent.left ? parent.left.name : '';
       //console.log("left of <"+parent.name + "> is <" + childName + ">" )
     } else if (node.compareTo(parent) > 0){
       parent.right = this.remove(parent.right, node);
-      let childName = parent.right ? parent.right.name: '';
+      //let childName = parent.right ? parent.right.name: '';
       //console.log("right of <"+parent.name + "> is <" + childName + ">" )
     }
     let balance = this.get_height(parent.left) - this.get_height(parent.right);
@@ -189,8 +189,8 @@ class AVLTree{
      if (! treeRoot) {
        return result;
      }
-     let leftName = treeRoot.left ? treeRoot.left.name:'';
-     let rightName = treeRoot.right ? treeRoot.right.name:'';
+     //let leftName = treeRoot.left ? treeRoot.left.name:'';
+     //let rightName = treeRoot.right ? treeRoot.right.name:'';
      //console.log("leafsinorder: name <" + treeRoot.name + "> left <" + leftName + "> right <" + rightName + ">");
      if ((! treeRoot.left) && (! treeRoot.right)) {
        //leaf node...return name

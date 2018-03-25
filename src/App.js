@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import { Grid, Navbar, Nav,NavItem,NavDropdown,MenuItem,Jumbotron, Button } from 'react-bootstrap';
 //my components
 //import {MySimpleStaticClock,MySimpleCube,MySimple1DMesh} from './components';
-//import {MySimpleStraightPaths} from './components';
+import {MySimpleStraightPaths} from './components';
 //import {MySimpleBoundingPolygon} from './components';
 //import {MySimple2blyLinkedEdgeListDemo} from './components';
-import {MySimpleTrapezoidalMap} from './components';
+//import {MySimpleTrapezoidalMap} from './components';
 //https://stackoverflow.com/questions/23402542/embedding-svg-into-reactjs
 
 class App extends Component {
@@ -56,10 +56,10 @@ class App extends Component {
             {/* works <MySimpleStaticClock/>  */}
             {/* works <MySimpleCube/>  */}
             {/* works <MySimple1DMesh/>  */}
-            {/*works <MySimpleStraightPaths/>*/}
+            <MySimpleStraightPaths/>
             {/* works <MySimpleBoundingPolygon/> */}
             { /* <MySimple2blyLinkedEdgeListDemo/> */}
-            <MySimpleTrapezoidalMap />
+            {/* <MySimpleTrapezoidalMap /> */}
           </Grid>
         </Jumbotron>
       </div>
